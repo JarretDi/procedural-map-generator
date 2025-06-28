@@ -6,6 +6,7 @@ extends Node2D
 @export var MAP_SIZE : int;
 
 const ATLAS_ID = 0;
+
 const WATER = Vector2i(9,15);
 const SAND = Vector2i(10,16);
 const GRASS = Vector2i(10,15);
@@ -16,3 +17,8 @@ func _ready() -> void:
 	for x in MAP_SIZE:
 		for y in MAP_SIZE:
 			base_layer.set_cell(Vector2i(x,y), ATLAS_ID, GRASS);
+	generateMap();
+
+func generateMap() -> void:
+	pass;
+	

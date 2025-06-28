@@ -12,8 +12,12 @@ config_version=5
 
 config/name="Hex-game"
 run/main_scene="uid://cxl850kyxum8o"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Heap="*res://heap.gd"
 
 [dotnet]
 
