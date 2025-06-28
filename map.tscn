@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://cxl850kyxum8o"]
+[gd_scene load_steps=5 format=3 uid="uid://cxl850kyxum8o"]
 
 [ext_resource type="Texture2D" uid="uid://dv2epjb228vom" path="res://AllAssetsPreview.png" id="1_c7s6e"]
+[ext_resource type="Script" uid="uid://bkhj1lx65qq1w" path="res://map.gd" id="2_wijl4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wijl4"]
+resource_name = "Base"
 texture = ExtResource("1_c7s6e")
 0:0/0 = 0
 1:0/0 = 0
@@ -1101,9 +1103,17 @@ texture = ExtResource("1_c7s6e")
 34:18/0 = 0
 35:18/0 = 0
 36:18/0 = 0
+19:13/0 = 0
+9:18/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_e0an3"]
 sources/0 = SubResource("TileSetAtlasSource_wijl4")
 
-[node name="Map" type="TileMapLayer"]
+[node name="Node2D" type="Node2D"]
+script = ExtResource("2_wijl4")
+MAP_SIZE = 128
+
+[node name="BaseLayer" type="TileMapLayer" parent="."]
 tile_set = SubResource("TileSet_e0an3")
+
+[node name="GenLayer" type="TileMapLayer" parent="."]
