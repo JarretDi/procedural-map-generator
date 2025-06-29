@@ -2,42 +2,63 @@
 import os
 import sys
 
-env = SConscript("godot-cpp/SConstruct")
+from methods import print_error
 
-# For reference:
-# - CCFLAGS are compilation flags shared between C and C++
-# - CFLAGS are for C-specific compilation flags
-# - CXXFLAGS are for C++-specific compilation flags
-# - CPPFLAGS are for pre-processor flags
-# - CPPDEFINES are for pre-processor defines
-# - LINKFLAGS are for linking flags
 
-# tweak this if you want to use different folders, or more folders, to store your source code in.
+libname = "MAP-GENERATOR"
+projectdir = "demo"
+
+localEnv = Environment(tools=["default"], PLATFORM="")
+
+# Build profiles can be used to decrease compile times.
+# You can either specify "disabled_classes", OR
+# explicitly specify "enabled_classes" which disables all other classes.
+# Modify the example file as needed and uncomment the line below or
+# manually specify the build_profile parameter when running SCons.
+
+# localEnv["build_profile"] = "build_profile.json"
+
+customs = ["custom.py"]
+customs = [os.path.abspath(path) for path in customs]
+
+opts = Variables(customs, ARGUMENTS)
+opts.Update(localEnv)
+
+Help(opts.GenerateHelpText(localEnv))
+
+env = localEnv.Clone()
+
+if not (os.path.isdir("godot-cpp") and os.listdir("godot-cpp")):
+    print_error("""godot-cpp is not available within this folder, as Git submodules haven't been initialized.
+Run the following command to download godot-cpp:
+
+    git submodule update --init --recursive""")
+    sys.exit(1)
+
+env = SConscript("godot-cpp/SConstruct", {"env": env, "customs": customs})
+
 env.Append(CPPPATH=["src/"])
 sources = Glob("src/*.cpp")
 
-if env["platform"] == "macos":
-    library = env.SharedLibrary(
-        "demo/bin/libgdexample.{}.{}.framework/libgdexample.{}.{}".format(
-            env["platform"], env["target"], env["platform"], env["target"]
-        ),
-        source=sources,
-    )
-elif env["platform"] == "ios":
-    if env["ios_simulator"]:
-        library = env.StaticLibrary(
-            "demo/bin/libgdexample.{}.{}.simulator.a".format(env["platform"], env["target"]),
-            source=sources,
-        )
-    else:
-        library = env.StaticLibrary(
-            "demo/bin/libgdexample.{}.{}.a".format(env["platform"], env["target"]),
-            source=sources,
-        )
-else:
-    library = env.SharedLibrary(
-        "demo/bin/libgdexample{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
-        source=sources,
-    )
+if env["target"] in ["editor", "template_debug"]:
+    try:
+        doc_data = env.GodotCPPDocData("src/gen/doc_data.gen.cpp", source=Glob("doc_classes/*.xml"))
+        sources.append(doc_data)
+    except AttributeError:
+        print("Not including class reference as we're targeting a pre-4.3 baseline.")
 
-Default(library)
+# .dev doesn't inhibit compatibility, so we don't need to key it.
+# .universal just means "compatible with all relevant arches" so we don't need to key it.
+suffix = env['suffix'].replace(".dev", "").replace(".universal", "")
+
+lib_filename = "{}{}{}{}".format(env.subst('$SHLIBPREFIX'), libname, suffix, env.subst('$SHLIBSUFFIX'))
+
+library = env.SharedLibrary(
+    "bin/{}/{}".format(env['platform'], lib_filename),
+    source=sources,
+)
+
+copy = env.Install("{}/bin/{}/".format(projectdir, env["platform"]), library)
+
+default_args = [library, copy]
+Default(*default_args)
