@@ -1,18 +1,20 @@
 #pragma once
 
 #include <utility>
-#include <vector>
+#include <set>
 #include <string>
 
 using std::pair;
-using std::vector;
+using std::set;
 using std::string;
 
 class Tile {
     pair<int, int> coords;
-    vector<string> possibleTiles;
+    set<string> possibleTiles;
 
-    Tile(pair<int, int> coords, vector<string> possibleTiles);
+    Tile(pair<int, int> coords, set<string> possibleTiles);
 
     int getPriority();
+
+    bool removePossibleTile(string str);
 };
