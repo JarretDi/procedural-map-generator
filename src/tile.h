@@ -9,12 +9,18 @@ using std::set;
 using std::string;
 
 class Tile {
-    pair<int, int> coords;
-    set<string> possibleTiles;
+    private:
 
-    Tile(pair<int, int> coords, set<string> possibleTiles);
+        pair<int, int> coords;
+        set<string> possibleTiles;
+    
+    public:
 
-    int getPriority();
+        Tile(pair<int, int> coords, set<string> possibleTiles);
 
-    bool removePossibleTile(string str);
+        int getPriority();
+
+        bool removePossibleTile(string str);
+
+        pair<int, int> getCoords();
 };

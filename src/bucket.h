@@ -2,10 +2,15 @@
 
 #include <vector>
 #include <unordered_map>
+#include <string>
 #include <tile.h>
+
+#include <cstdlib>
+#include <ctime> 
 
 using std::vector;
 using std::unordered_map;
+using std::string;
 
 class Bucket {
     private: 
@@ -13,5 +18,12 @@ class Bucket {
         vector<Tile> tiles;
         
         // Maps a tile to its index
-        unordered_map<Tile, int> tileToIndex;
+        unordered_map<pair<int,int>, int> tileToIndex;
+
+    public:
+        void insert(Tile tile);
+
+        void updateTile(Tile tile, string opToRemove);
+
+        Tile removeRandom(Tile tile);
 };

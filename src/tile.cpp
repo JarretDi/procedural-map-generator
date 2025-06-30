@@ -11,3 +11,7 @@ int Tile::getPriority() {
 bool Tile::removePossibleTile(string str) {
     return possibleTiles.erase(str);
 }
+
+pair<int, int> Tile::getCoords() {
+    return coords;
+}

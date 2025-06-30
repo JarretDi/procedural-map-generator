@@ -1,13 +1,13 @@
-#pragma once
+// #pragma once
 
-#include <godot-cpp/classes/object.hpp>
+// #include <godot-cpp/classes/object.hpp>
 
-using namespace godot;
+// using namespace godot;
 
-class Generator : public Object {
-    GDCLASS(Generator, Object)
+// class Generator : public Object {
+//     GDCLASS(Generator, Object)
 
-    protected:
-        static void _bind_methods();
+//     protected:
+//         static void _bind_methods();
         
-}
+// }
