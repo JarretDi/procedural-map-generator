@@ -23,7 +23,7 @@ class Bucket {
     public:
         void insert(Tile tile);
 
-        void updateTile(Tile tile, string opToRemove);
+        void updateTile(pair<int, int> tileCoords, string opToRemove);
 
         Tile removeRandom(Tile tile);
 };
