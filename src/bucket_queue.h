@@ -20,6 +20,8 @@ class BucketQueue {
         BQNode * head;
         BQNode * tail;
 
+        int radius;
+
         void createBuckets(int length);
 
         // picks a tile among those with the highest priority > 1
@@ -30,11 +32,14 @@ class BucketQueue {
         // returns true if there are no more tiles in a node after collapsed
         bool hasTilesToCollapse();
 
+        // updates neighbouring tiles within radius of center based on tile rules
+        void propogate(pair<int, int> center);
+
         // removes tileType from the given tiles
         void updateTile(pair<int, int> tileCoords, string tileType);
     
     public:
-        BucketQueue(set<string> types, int mapDimensions);
+        BucketQueue(set<string> types, int mapDimensions, int radius = 1);
 
         ~BucketQueue();
 };
