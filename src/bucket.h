@@ -25,5 +25,7 @@ class Bucket {
 
         Tile * updateTile(pair<int, int> tileCoords, string opToRemove);
 
-        Tile removeRandom(Tile tile);
+        Tile * removeRandom();
+
+        Tile * removeTile(pair<int, int> coordsToRemove);
 };

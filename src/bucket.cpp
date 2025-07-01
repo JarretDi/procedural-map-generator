@@ -10,19 +10,25 @@ Tile * Bucket::updateTile(pair<int, int> tileCoords, string tileType) {
     return tiles[tileIndex].removeType(tileType);
 }
 
-Tile Bucket::removeRandom(Tile tile) {
+Tile * Bucket::removeRandom() {
     std::srand(std::time(0));
     int tileIndex = std::rand() % tiles.size();
 
-    pair<int, int> curCoords  = tiles[tileIndex].getCoords();
+    return removeTile(tiles[tileIndex].getCoords());
+}
+
+Tile * Bucket::removeTile(pair<int, int> coordsToRemove) {
+    int tileIndex = tileToIndex[coordsToRemove];
+
     pair<int, int> lastCoords = tiles.back().getCoords();
 
     std::swap(tiles[tileIndex], tiles.back());
 
     tileToIndex[lastCoords] = tileIndex;
-    tileToIndex.erase(curCoords);
+    tileToIndex.erase(coordsToRemove);
 
-    Tile ret = tiles.back();
+    Tile * ret = &tiles.back();
     tiles.pop_back();
+
     return ret;
 }
