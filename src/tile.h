@@ -23,7 +23,7 @@ class Tile {
 
         int getPriority();
 
-        Tile * removePossibleTile(string str);
+        Tile * removeType(string str);
 
         pair<int, int> getCoords();
 

@@ -8,7 +8,7 @@ int Tile::getPriority() {
     return possibleTiles.size();
 }
 
-Tile * Tile::removePossibleTile(string str) {
+Tile * Tile::removeType(string str) {
     possibleTiles.erase(str);
     return this;
 }
