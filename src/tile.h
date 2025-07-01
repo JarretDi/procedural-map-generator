@@ -4,6 +4,9 @@
 #include <set>
 #include <string>
 
+#include <cstdlib>
+#include <ctime> 
+
 using std::pair;
 using std::set;
 using std::string;
@@ -23,4 +26,7 @@ class Tile {
         bool removePossibleTile(string str);
 
         pair<int, int> getCoords();
+
+        // picks a random tileType among its options, and then returns it
+        string collapseTile();
 };
