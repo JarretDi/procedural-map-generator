@@ -11,8 +11,8 @@ class BucketQueue {
     private:
         struct BQNode {
             Bucket bucket;
-            Bucket * next;
-            Bucket * prev;
+            BQNode * next;
+            BQNode * prev;
         };
 
         vector<vector<string>> map;

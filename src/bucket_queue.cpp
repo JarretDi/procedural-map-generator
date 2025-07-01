@@ -14,3 +14,17 @@ BucketQueue::BucketQueue(set<string> types, int mapDimensions) {
     }
 }
 
+void BucketQueue::createBuckets(int size) {
+    head = new BQNode();
+    BQNode * temp = head;
+
+    for (int i = 0; i < size - 1; i++) {
+        BQNode * next = new BQNode();
+        temp->next = next;
+        next->prev = temp;
+        temp = next;
+    }
+
+    tail = temp;
+}
+
