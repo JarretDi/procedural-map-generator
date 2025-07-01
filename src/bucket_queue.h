@@ -15,10 +15,13 @@ class BucketQueue {
             BQNode * prev;
         };
 
-        vector<vector<string>> map;
-
         BQNode * head;
         BQNode * tail;
+
+        vector<vector<string>> map;
+
+        // maps a tile type to a list of valid neighbours within radius
+        unordered_map<string, set<string>> typeRules;
 
         int radius;
 
@@ -33,13 +36,13 @@ class BucketQueue {
         bool hasTilesToCollapse();
 
         // updates neighbouring tiles within radius of center based on tile rules
-        void propogate(pair<int, int> center);
+        void propogate(pair<int, int> center, string type);
 
         // removes tileType from the given tiles
         void updateTile(pair<int, int> tileCoords, string tileType);
     
     public:
-        BucketQueue(set<string> types, int mapDimensions, int radius = 1);
+        BucketQueue(unordered_map<string, set<string>> & typesRules, int mapDimensions, int radius = 1);
 
         ~BucketQueue();
 };
