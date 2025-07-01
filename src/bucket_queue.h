@@ -1,10 +1,15 @@
 #pragma once
 
+#include <set>
+#include <string>
 #include "bucket.h"
+
+using std::set;
+using std::string;
 
 class BucketQueue {
     private:
-        class BQNode {
+        struct BQNode {
             Bucket bucket;
             Bucket * next;
             Bucket * prev;
@@ -29,7 +34,7 @@ class BucketQueue {
         void updateTile(pair<int, int> tileCoords, string tileType);
     
     public:
-        BucketQueue(vector<string> types, int mapDimensions);
+        BucketQueue(set<string> types, int mapDimensions);
 
         ~BucketQueue();
 };
