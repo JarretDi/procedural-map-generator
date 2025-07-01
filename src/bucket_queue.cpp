@@ -70,3 +70,11 @@ string BucketQueue::collapseTile() {
     map[coords.first][coords.second] = type;
     propogate(coords, type);
 }
+
+void BucketQueue::propogate(pair<int, int> center, string type) {
+    for (int x = center.first - radius; x <= center.first + radius; x++) {
+        for (int y = center.second - radius; y <= center.second + radius; y++) {
+            updateTile(center, type);
+        }
+    }
+}

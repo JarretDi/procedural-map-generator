@@ -38,7 +38,9 @@ class BucketQueue {
         // updates neighbouring tiles within radius of center based on tile rules
         void propogate(pair<int, int> center, string type);
 
-        // removes tileType from the given tiles
+        // finds all types that don't work with given type
+        // removes those types from given tile
+        // moves the tile to the right bucket based on new possibilities
         void updateTile(pair<int, int> tileCoords, string tileType);
     
     public:
