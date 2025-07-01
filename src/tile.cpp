@@ -8,8 +8,9 @@ int Tile::getPriority() {
     return possibleTiles.size();
 }
 
-bool Tile::removePossibleTile(string str) {
-    return possibleTiles.erase(str);
+Tile * Tile::removePossibleTile(string str) {
+    possibleTiles.erase(str);
+    return this;
 }
 
 pair<int, int> Tile::getCoords() {

@@ -5,9 +5,9 @@ void Bucket::insert(Tile tile) {
     tileToIndex[tile.getCoords()] = tiles.size();
 }
 
-void Bucket::updateTile(pair<int, int> tileCoords, string tileType) {
+Tile * Bucket::updateTile(pair<int, int> tileCoords, string tileType) {
     int tileIndex = tileToIndex[tileCoords];
-    tiles[tileIndex].removePossibleTile(tileType);
+    return tiles[tileIndex].removeType(tileType);
 }
 
 Tile Bucket::removeRandom(Tile tile) {
