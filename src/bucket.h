@@ -28,4 +28,6 @@ class Bucket {
         Tile * removeRandom();
 
         Tile * removeTile(pair<int, int> coordsToRemove);
+
+        bool isEmpty();
 };

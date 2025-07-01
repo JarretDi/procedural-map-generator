@@ -28,3 +28,15 @@ void BucketQueue::createBuckets(int size) {
     tail = temp;
 }
 
+bool BucketQueue::hasTilesToCollapse() {
+    BQNode * temp = head;
+
+    while (temp != nullptr) {
+        if (!temp->bucket.isEmpty()) {
+            return true;
+        } else {
+            temp = temp->next;
+        }
+    }
+    return false;
+}

@@ -32,3 +32,7 @@ Tile * Bucket::removeTile(pair<int, int> coordsToRemove) {
 
     return ret;
 }
+
+bool Bucket::isEmpty() {
+    return tiles.size() == 0;
+}
