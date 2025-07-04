@@ -2,10 +2,12 @@
 
 #include <set>
 #include <string>
+#include <unordered_map>
 #include "bucket.h"
 
 using std::set;
 using std::string;
+using std::unordered_map;
 
 class BucketQueue {
     private:
@@ -23,13 +25,15 @@ class BucketQueue {
         // maps a tile type to a list of valid neighbours within radius
         unordered_map<string, set<string>> typeRules;
 
+        set<string> types;
+
         int radius;
 
         void createBuckets(int length);
 
         // picks a tile among those with the highest priority > 1
         // picks a random tileType among its possible types
-        // adds string it to corresponding location on map
+        // adds string to corresponding location on map
         string collapseTile();
 
         // returns true if there are no more tiles in a node after collapsed

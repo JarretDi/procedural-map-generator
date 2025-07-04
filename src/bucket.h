@@ -1,15 +1,16 @@
 #pragma once
 
 #include <vector>
-#include <unordered_map>
+#include <map>
 #include <string>
 #include <tile.h>
 
 #include <cstdlib>
 #include <ctime> 
+#include <stdexcept>
 
 using std::vector;
-using std::unordered_map;
+using std::map;
 using std::string;
 
 class Bucket {
@@ -18,7 +19,7 @@ class Bucket {
         vector<Tile> tiles;
         
         // Maps a tile to its index
-        unordered_map<pair<int,int>, int> tileToIndex;
+        map<pair<int,int>, int> tileToIndex;
 
     public:
         void insert(Tile tile);

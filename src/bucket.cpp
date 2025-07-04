@@ -6,7 +6,7 @@ void Bucket::insert(Tile tile) {
 }
 
 Tile * Bucket::updateTile(pair<int, int> tileCoords, string tileType) {
-    int tileIndex = tileToIndex[tileCoords];
+    int tileIndex = tileToIndex.at(tileCoords);
     return tiles[tileIndex].removeType(tileType);
 }
 

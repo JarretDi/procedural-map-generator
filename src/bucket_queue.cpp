@@ -1,17 +1,15 @@
 #include "bucket_queue.h"
 
-BucketQueue::BucketQueue(unordered_map<string, set<string>> & typeRules, int mapDimensions, int radius = 1) {
+BucketQueue::BucketQueue(unordered_map<string, set<string>> & typeRules, int mapDimensions, int radius) {
     createBuckets(typeRules.size());
     radius = radius;
 
+    for (auto it = typeRules.begin(); it != typeRules.end(); it++) {
+        types.insert(it->first);
+    }
+
     for (int x = 0; x < mapDimensions; x++) {
         for (int y = 0; y < mapDimensions; y++) {
-            set<string> types;
-
-            for (auto it = typeRules.begin(); it != typeRules.end(); it++) {
-                types.insert(it->first);
-            }
-
             tail->bucket.insert(Tile({x,y}, types));
         }
     }
@@ -21,6 +19,19 @@ BucketQueue::BucketQueue(unordered_map<string, set<string>> & typeRules, int map
     while (hasTilesToCollapse()) {
         collapseTile();
     }
+}
+
+BucketQueue::~BucketQueue() {
+    BQNode * temp = head;
+
+    while (temp != nullptr) {
+        BQNode * next = temp->next;
+        delete temp;
+        temp = next;
+    }
+
+    head = nullptr;
+    tail = nullptr;
 }
 
 void BucketQueue::createBuckets(int size) {
@@ -69,12 +80,36 @@ string BucketQueue::collapseTile() {
 
     map[coords.first][coords.second] = type;
     propogate(coords, type);
+    return type;
 }
 
 void BucketQueue::propogate(pair<int, int> center, string type) {
     for (int x = center.first - radius; x <= center.first + radius; x++) {
         for (int y = center.second - radius; y <= center.second + radius; y++) {
             updateTile(center, type);
+        }
+    }
+}
+
+void BucketQueue::updateTile(pair<int, int> tileCoords, string tileType) {
+    set<string> valid = typeRules[tileType];
+
+    set<string> toRemove;
+
+    for (string type : types) {
+        //i.e. if it isnt in valid
+        if (valid.find(type) == valid.end()) {
+            toRemove.insert(type);
+        }
+    }
+
+    for (BQNode * temp = head; temp != nullptr; temp = temp->next) {
+        try {
+            for (string type : toRemove) {
+                temp->bucket.updateTile(tileCoords, type);
+            }
+        } catch (const std::out_of_range& e) {
+            continue;
         }
     }
 }
