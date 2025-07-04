@@ -38,7 +38,7 @@ void BucketQueue::createBuckets(int size) {
     head = new BQNode();
     BQNode * temp = head;
 
-    for (int i = 0; i < size - 1; i++) {
+    for (int i = 0; i < size; i++) {
         BQNode * next = new BQNode();
         temp->next = next;
         next->prev = temp;
@@ -108,6 +108,19 @@ void BucketQueue::updateTile(pair<int, int> tileCoords, string tileType) {
             for (string type : toRemove) {
                 temp->bucket.updateTile(tileCoords, type);
             }
+
+            //if we get here, we haven't caught out_of_range
+            Tile * tile = temp->bucket.removeTile(tileCoords);
+            int priority = tile->getPriority();
+
+            // find and insert into the right bucket
+            BQNode * temp2 = head;
+            for (int i = 0; i < priority - 1; i++) {
+                temp2 = temp2->next;
+            }
+            temp2->bucket.insert(*tile);
+            return;
+
         } catch (const std::out_of_range& e) {
             continue;
         }
