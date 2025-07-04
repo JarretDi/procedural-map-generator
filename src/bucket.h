@@ -24,11 +24,11 @@ class Bucket {
     public:
         void insert(Tile tile);
 
-        Tile * updateTile(pair<int, int> tileCoords, string opToRemove);
+        void updateTile(pair<int, int> tileCoords, string opToRemove);
 
-        Tile * removeRandom();
+        Tile removeRandom();
 
-        Tile * removeTile(pair<int, int> coordsToRemove);
+        Tile removeTile(pair<int, int> coordsToRemove);
 
         bool isEmpty();
 };

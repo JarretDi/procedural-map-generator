@@ -72,11 +72,9 @@ string BucketQueue::collapseTile() {
         }
     }
 
-    //note be careful of bucket pointer vs copy
-    Tile * tile = temp->bucket.removeRandom();
-    pair<int, int> coords = tile->getCoords();
-    string type = tile->collapseTile();
-    delete tile;
+    Tile tile = temp->bucket.removeRandom();
+    pair<int, int> coords = tile.getCoords();
+    string type = tile.collapseTile();
 
     map[coords.first][coords.second] = type;
     propogate(coords, type);
@@ -110,15 +108,15 @@ void BucketQueue::updateTile(pair<int, int> tileCoords, string tileType) {
             }
 
             //if we get here, we haven't caught out_of_range
-            Tile * tile = temp->bucket.removeTile(tileCoords);
-            int priority = tile->getPriority();
+            Tile tile = temp->bucket.removeTile(tileCoords);
+            int priority = tile.getPriority();
 
             // find and insert into the right bucket
             BQNode * temp2 = head;
             for (int i = 0; i < priority - 1; i++) {
                 temp2 = temp2->next;
             }
-            temp2->bucket.insert(*tile);
+            temp2->bucket.insert(tile);
             return;
 
         } catch (const std::out_of_range& e) {
