@@ -1,2 +1,7 @@
 # Normalize EOL for all files that Git considers text files.
 * text=auto eol=lf
+
+# Ensure C++ is recognized by GitHub
+*.cpp linguist-language=C++
+*.h   linguist-language=C++
+*.hpp linguist-language=C++
