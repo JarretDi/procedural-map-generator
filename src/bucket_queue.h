@@ -9,6 +9,8 @@ using std::set;
 using std::string;
 using std::unordered_map;
 
+using namespace godot;
+
 class BucketQueue {
     private:
         struct BQNode {
@@ -40,12 +42,12 @@ class BucketQueue {
         bool hasTilesToCollapse();
 
         // updates neighbouring tiles within radius of center based on tile rules
-        void propogate(pair<int, int> center, string type);
+        void propogate(Vector2i center, string type);
 
         // finds all types that don't work with given type
         // removes those types from given tile
         // moves the tile to the right bucket based on new possibilities
-        void updateTile(pair<int, int> tileCoords, string tileType);
+        void updateTile(Vector2i tileCoords, string tileType);
     
     public:
         BucketQueue(unordered_map<string, set<string>> & typesRules, int mapDimensions, int radius = 1);

@@ -13,22 +13,24 @@ using std::vector;
 using std::map;
 using std::string;
 
+using namespace godot;
+
 class Bucket {
     private: 
         // Stores the tiles
         vector<Tile> tiles;
         
         // Maps a tile to its index
-        map<pair<int,int>, int> tileToIndex;
+        map<Vector2i, int> tileToIndex;
 
     public:
         void insert(Tile tile);
 
-        void updateTile(pair<int, int> tileCoords, string opToRemove);
+        void updateTile(Vector2i tileCoords, string opToRemove);
 
         Tile removeRandom();
 
-        Tile removeTile(pair<int, int> coordsToRemove);
+        Tile removeTile(Vector2i coordsToRemove);
 
         bool isEmpty();
 };

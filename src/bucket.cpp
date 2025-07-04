@@ -5,7 +5,7 @@ void Bucket::insert(Tile tile) {
     tileToIndex[tile.getCoords()] = tiles.size();
 }
 
-void Bucket::updateTile(pair<int, int> tileCoords, string tileType) {
+void Bucket::updateTile(Vector2i tileCoords, string tileType) {
     int tileIndex = tileToIndex.at(tileCoords);
     return tiles[tileIndex].removeType(tileType);
 }
@@ -17,10 +17,10 @@ Tile Bucket::removeRandom() {
     return removeTile(tiles[tileIndex].getCoords());
 }
 
-Tile Bucket::removeTile(pair<int, int> coordsToRemove) {
+Tile Bucket::removeTile(Vector2i coordsToRemove) {
     int tileIndex = tileToIndex[coordsToRemove];
 
-    pair<int, int> lastCoords = tiles.back().getCoords();
+    Vector2i lastCoords = tiles.back().getCoords();
 
     std::swap(tiles[tileIndex], tiles.back());
 

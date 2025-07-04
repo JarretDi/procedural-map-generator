@@ -73,23 +73,23 @@ string BucketQueue::collapseTile() {
     }
 
     Tile tile = temp->bucket.removeRandom();
-    pair<int, int> coords = tile.getCoords();
+    Vector2i coords = tile.getCoords();
     string type = tile.collapseTile();
 
-    map[coords.first][coords.second] = type;
+    map[coords.x][coords.y] = type;
     propogate(coords, type);
     return type;
 }
 
-void BucketQueue::propogate(pair<int, int> center, string type) {
-    for (int x = center.first - radius; x <= center.first + radius; x++) {
-        for (int y = center.second - radius; y <= center.second + radius; y++) {
+void BucketQueue::propogate(Vector2i center, string type) {
+    for (int x = center.x - radius; x <= center.x + radius; x++) {
+        for (int y = center.y - radius; y <= center.y + radius; y++) {
             updateTile(center, type);
         }
     }
 }
 
-void BucketQueue::updateTile(pair<int, int> tileCoords, string tileType) {
+void BucketQueue::updateTile(Vector2i tileCoords, string tileType) {
     set<string> valid = typeRules[tileType];
 
     set<string> toRemove;

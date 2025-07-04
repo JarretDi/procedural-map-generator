@@ -1,6 +1,6 @@
 #include "tile.h"
 
-Tile::Tile(pair<int, int> coords, set<string> possibleTiles) : coords(coords), possibleTiles(possibleTiles) {
+Tile::Tile(Vector2i coords, set<string> possibleTiles) : coords(coords), possibleTiles(possibleTiles) {
 
 }
 
@@ -12,7 +12,7 @@ void Tile::removeType(string str) {
     possibleTiles.erase(str);
 }
 
-pair<int, int> Tile::getCoords() {
+Vector2i Tile::getCoords() {
     return coords;
 }
 

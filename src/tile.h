@@ -1,31 +1,31 @@
 #pragma once
 
-#include <utility>
 #include <set>
 #include <string>
 
 #include <cstdlib>
 #include <ctime> 
+#include <godot_cpp/variant/vector2i.hpp>
 
-using std::pair;
 using std::set;
 using std::string;
+using namespace godot;
 
 class Tile {
     private:
 
-        pair<int, int> coords;
+        Vector2i coords;
         set<string> possibleTiles;
     
     public:
 
-        Tile(pair<int, int> coords, set<string> possibleTiles);
+        Tile(Vector2i coords, set<string> possibleTiles);
 
         int getPriority();
 
         void removeType(string str);
 
-        pair<int, int> getCoords();
+        Vector2i getCoords();
 
         // picks a random tileType among its options, and then returns it
         string collapseTile();
