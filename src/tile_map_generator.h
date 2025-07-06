@@ -53,7 +53,7 @@ class TileMapGenerator : public TileMapLayer {
         bool hasTilesToCollapse();
 
         // updates neighbouring tiles within radius of center based on tile rules
-        void propogate(Vector2i center, Vector2i type);
+        void propagate(Vector2i center, Vector2i type);
 
         // finds all types that don't work with given type
         // removes those types from given tile

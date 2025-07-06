@@ -1,3 +1,4 @@
+#pragma once
 #include <godot_cpp/variant/vector2i.hpp>
 #include <functional>
 

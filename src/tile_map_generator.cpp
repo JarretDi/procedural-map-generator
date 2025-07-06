@@ -104,14 +104,17 @@ Vector2i TileMapGenerator::collapseTile() {
     //map[coords.x][coords.y] = type;
     set_cell(coords, tileAtlas, type);
 
-    propogate(coords, type);
+    propagate(coords, type);
     return type;
 }
 
-void TileMapGenerator::propogate(Vector2i center, Vector2i type) {
+void TileMapGenerator::propagate(Vector2i center, Vector2i type) {
     for (int x = center.x - radius; x <= center.x + radius; x++) {
         for (int y = center.y - radius; y <= center.y + radius; y++) {
-            updateTile(center, type);
+            Vector2i neighbour = Vector2i(x, y);
+            if (center != neighbour) {
+                updateTile(center, type);
+            }
         }
     }
 }

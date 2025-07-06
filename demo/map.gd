@@ -19,11 +19,11 @@ func _ready() -> void:
 			base_layer.set_cell(Vector2i(x,y), ATLAS_ID, GRASS);
 	
 	var tileRules = {
-		WATER : [SAND, FOREST],
-		SAND : [WATER, GRASS],
-		GRASS : [SAND, FOREST, MOUNTAIN],
-		FOREST : [WATER, GRASS, MOUNTAIN],
-		MOUNTAIN : [GRASS, FOREST]
+		WATER : [WATER, SAND, FOREST],
+		SAND : [WATER, SAND, GRASS],
+		GRASS : [SAND, GRASS, FOREST, MOUNTAIN],
+		FOREST : [WATER, GRASS, FOREST, MOUNTAIN],
+		MOUNTAIN : [GRASS, FOREST, MOUNTAIN]
 	}
 	
-	gen_layer.generate(tileRules, ATLAS_ID, 128, 1)	
+	gen_layer.generate(tileRules, ATLAS_ID, MAP_SIZE, 1)	

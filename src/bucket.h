@@ -8,6 +8,8 @@
 #include <ctime> 
 #include <stdexcept>
 
+#include "vector2i_hash.hpp"
+
 using std::vector;
 using std::unordered_map;
 
