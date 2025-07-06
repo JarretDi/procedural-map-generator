@@ -1,17 +1,18 @@
 #include "tile_map_generator.h"
 
 void TileMapGenerator::_bind_methods() {
-    ClassDB::bind_method(D_METHOD("generate", "tileDict", "tileAtlas", "mapDimensions", "radius"), &TileMapGenerator::generate);
+    ClassDB::bind_method(D_METHOD("generate", "tileDict", "tileAtlas", "mapDimensions", "radius", "delayMS"), &TileMapGenerator::generate);
 }
 
 TileMapGenerator::TileMapGenerator() {
 
 }
 
-void TileMapGenerator::generate(Dictionary tileDict, int tileAtlas, int mapDimensions, int radius) {
+void TileMapGenerator::generate(Dictionary tileDict, int tileAtlas, int mapDimensions, int radius, int delayMS) {
     this->tileAtlas = tileAtlas;
     this->mapDimensions = mapDimensions;
     this->radius = radius;
+    this->delayMS = delayMS;
 
     Array tiles = tileDict.keys();
 
@@ -43,6 +44,7 @@ void TileMapGenerator::generate(Dictionary tileDict, int tileAtlas, int mapDimen
 
     while (hasTilesToCollapse()) {
         collapseTile();
+        OS::get_singleton()->delay_msec(delayMS);
     }
 }
 
@@ -108,7 +110,7 @@ Vector2i TileMapGenerator::collapseTile() {
     return type;
 }
 
-void TileMapGenerator::propagate(Vector2i center, Vector2i type) {
+void TileMapGenerator::propagate(const Vector2i & center, const Vector2i & type) {
     for (int x = center.x - radius; x <= center.x + radius; x++) {
         for (int y = center.y - radius; y <= center.y + radius; y++) {
             Vector2i neighbour = Vector2i(x, y);
@@ -119,7 +121,7 @@ void TileMapGenerator::propagate(Vector2i center, Vector2i type) {
     }
 }
 
-void TileMapGenerator::updateTile(Vector2i tileCoords, Vector2i tileType) {
+void TileMapGenerator::updateTile(const Vector2i & tileCoords, const Vector2i & tileType) {
     std::set<Vector2i> valid = typeRules[tileType];
 
     std::set<Vector2i> toRemove;

@@ -4,6 +4,7 @@ extends Node2D
 @onready var gen_layer: TileMapGenerator = $GenLayer
 
 @export var MAP_SIZE : int;
+@export var RADIUS : int;
 
 const ATLAS_ID = 0;
 
@@ -26,4 +27,4 @@ func _ready() -> void:
 		MOUNTAIN : [GRASS, FOREST, MOUNTAIN]
 	}
 	
-	gen_layer.generate(tileRules, ATLAS_ID, MAP_SIZE, 1)	
+	gen_layer.generate(tileRules, ATLAS_ID, MAP_SIZE, RADIUS)	

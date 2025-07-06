@@ -6,6 +6,7 @@
 #include "vector2i_hash.hpp"
 
 #include <godot_cpp/classes/object.hpp>
+#include <godot_cpp/classes/os.hpp>
 #include <godot_cpp/core/class_db.hpp>
 
 #include <godot_cpp/variant/dictionary.hpp>
@@ -41,6 +42,7 @@ class TileMapGenerator : public TileMapLayer {
         int tileAtlas;
         int mapDimensions;
         int radius;
+        int delayMS;
 
         void createBuckets(int length);
 
@@ -53,19 +55,19 @@ class TileMapGenerator : public TileMapLayer {
         bool hasTilesToCollapse();
 
         // updates neighbouring tiles within radius of center based on tile rules
-        void propagate(Vector2i center, Vector2i type);
+        void propagate(const Vector2i & center, const Vector2i & type);
 
         // finds all types that don't work with given type
         // removes those types from given tile
         // moves the tile to the right bucket based on new possibilities
-        void updateTile(Vector2i tileCoords, Vector2i tileType);
+        void updateTile(const Vector2i & tileCoords, const Vector2i & tileType);
     
     public:
         TileMapGenerator();
 
         // takes a godot dictionary (from the engine) sets typeRules to match it in c++
         // additionally runs the generator itself
-        void generate(Dictionary tileDict, int tileAtlas, int mapDimensions, int radius);
+        void generate(Dictionary tileDict, int tileAtlas, int mapDimensions, int radius, int delayMS);
 
         ~TileMapGenerator();
 };
