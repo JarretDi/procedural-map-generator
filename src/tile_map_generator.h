@@ -7,6 +7,10 @@
 
 #include <godot_cpp/classes/object.hpp>
 #include <godot_cpp/core/class_db.hpp>
+
+#include <godot_cpp/variant/dictionary.hpp>
+#include <godot_cpp/variant/array.hpp>
+
 #include <godot_cpp/classes/tile_map_layer.hpp>
 
 using namespace godot;
@@ -34,6 +38,7 @@ class TileMapGenerator : public TileMapLayer {
 
         std::set<Vector2i> types;
 
+        int mapDimensions;
         int radius;
 
         void createBuckets(int length);
@@ -55,7 +60,11 @@ class TileMapGenerator : public TileMapLayer {
         void updateTile(Vector2i tileCoords, Vector2i tileType);
     
     public:
-        TileMapGenerator(unordered_map<Vector2i, std::set<Vector2i>> & typesRules, int mapDimensions, int radius = 1);
+        TileMapGenerator(int mapDimensions, int radius = 1);
+
+        // takes a godot dictionary (from the engine) sets typeRules to match it in c++
+        // additionally runs the generator itself
+        void generate(Dictionary tileDict);
 
         ~TileMapGenerator();
 };

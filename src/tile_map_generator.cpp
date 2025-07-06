@@ -1,8 +1,27 @@
 #include "tile_map_generator.h"
 
-TileMapGenerator::TileMapGenerator(unordered_map<Vector2i, std::set<Vector2i>> & typeRules, int mapDimensions, int radius) {
+TileMapGenerator::TileMapGenerator(int mapDimensions, int radius) : mapDimensions(mapDimensions), radius(radius) {
+
+}
+
+void TileMapGenerator::generate(Dictionary tileDict) {
+    Array tiles = tileDict.keys();
+
+    for (int i = 0; i < tiles.size(); i++) {
+        Vector2i tileType = tiles[i];
+        Array validTypes = tileDict[tileType];
+
+        std::set<Vector2i> valid;
+
+        for (int j = 0; j < validTypes.size(); j++) {
+            Vector2i validType = validTypes[j];
+            valid.insert(validType);
+        }
+
+        typeRules[tileType] = valid;
+    }
+
     createBuckets(typeRules.size());
-    radius = radius;
 
     for (auto it = typeRules.begin(); it != typeRules.end(); it++) {
         types.insert(it->first);
