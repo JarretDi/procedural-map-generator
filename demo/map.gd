@@ -5,6 +5,7 @@ extends Node2D
 
 @export var MAP_SIZE : int;
 @export var RADIUS : int;
+@export var DELAYMS : int;
 
 const ATLAS_ID = 0;
 
@@ -20,11 +21,11 @@ func _ready() -> void:
 			base_layer.set_cell(Vector2i(x,y), ATLAS_ID, GRASS);
 	
 	var tileRules = {
-		WATER : [WATER, SAND, FOREST],
+		WATER : [WATER, SAND],
 		SAND : [WATER, SAND, GRASS],
 		GRASS : [SAND, GRASS, FOREST, MOUNTAIN],
-		FOREST : [WATER, GRASS, FOREST, MOUNTAIN],
+		FOREST : [GRASS, FOREST, MOUNTAIN],
 		MOUNTAIN : [GRASS, FOREST, MOUNTAIN]
 	}
 	
-	gen_layer.generate(tileRules, ATLAS_ID, MAP_SIZE, RADIUS)	
+	gen_layer.generate(tileRules, ATLAS_ID, MAP_SIZE, RADIUS, DELAYMS)	

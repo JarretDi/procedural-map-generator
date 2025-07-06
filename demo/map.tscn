@@ -2214,8 +2214,8 @@ sources/0 = SubResource("TileSetAtlasSource_e0an3")
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("2_wijl4")
-MAP_SIZE = 128
-RADIUS = 2
+MAP_SIZE = 64
+RADIUS = 1
 
 [node name="BaseLayer" type="TileMapLayer" parent="."]
 tile_set = SubResource("TileSet_e0an3")

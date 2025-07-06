@@ -115,7 +115,7 @@ void TileMapGenerator::propagate(const Vector2i & center, const Vector2i & type)
         for (int y = center.y - radius; y <= center.y + radius; y++) {
             Vector2i neighbour = Vector2i(x, y);
             if (center != neighbour) {
-                updateTile(center, type);
+                updateTile(neighbour, type);
             }
         }
     }
