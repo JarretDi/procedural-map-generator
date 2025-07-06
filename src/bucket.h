@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <map>
-#include <string>
 #include <tile.h>
 
 #include <cstdlib>
@@ -11,7 +10,6 @@
 
 using std::vector;
 using std::map;
-using std::string;
 
 using namespace godot;
 
