@@ -1116,4 +1116,4 @@ MAP_SIZE = 128
 [node name="BaseLayer" type="TileMapLayer" parent="."]
 tile_set = SubResource("TileSet_e0an3")
 
-[node name="GenLayer" type="TileMapLayer" parent="."]
+[node name="GenLayer" type="TileMapGenerator" parent="."]

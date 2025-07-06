@@ -1,10 +1,18 @@
 #include "tile_map_generator.h"
 
-TileMapGenerator::TileMapGenerator(int tileAtlas, int mapDimensions, int radius) : tileAtlas(tileAtlas), mapDimensions(mapDimensions), radius(radius) {
+void TileMapGenerator::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("generate", "tileDict", "tileAtlas", "mapDimensions", "radius"), &TileMapGenerator::generate);
+}
+
+TileMapGenerator::TileMapGenerator() {
 
 }
 
-void TileMapGenerator::generate(Dictionary tileDict) {
+void TileMapGenerator::generate(Dictionary tileDict, int tileAtlas, int mapDimensions, int radius) {
+    this->tileAtlas = tileAtlas;
+    this->mapDimensions = mapDimensions;
+    this->radius = radius;
+
     Array tiles = tileDict.keys();
 
     for (int i = 0; i < tiles.size(); i++) {
@@ -94,6 +102,7 @@ Vector2i TileMapGenerator::collapseTile() {
     Vector2i type = tile.collapseTile();
 
     //map[coords.x][coords.y] = type;
+    set_cell(coords, tileAtlas, type);
 
     propogate(coords, type);
     return type;

@@ -61,11 +61,11 @@ class TileMapGenerator : public TileMapLayer {
         void updateTile(Vector2i tileCoords, Vector2i tileType);
     
     public:
-        TileMapGenerator(int tileAtlas, int mapDimensions, int radius);
+        TileMapGenerator();
 
         // takes a godot dictionary (from the engine) sets typeRules to match it in c++
         // additionally runs the generator itself
-        void generate(Dictionary tileDict);
+        void generate(Dictionary tileDict, int tileAtlas, int mapDimensions, int radius);
 
         ~TileMapGenerator();
 };

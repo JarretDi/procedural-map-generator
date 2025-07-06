@@ -15,10 +15,6 @@ run/main_scene="uid://cxl850kyxum8o"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
-[autoload]
-
-Heap="*res://heap.gd"
-
 [dotnet]
 
 project/assembly_name="Hex-game"
