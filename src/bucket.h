@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <tile.h>
 
 #include <cstdlib>
@@ -9,7 +9,7 @@
 #include <stdexcept>
 
 using std::vector;
-using std::map;
+using std::unordered_map;
 
 using namespace godot;
 
@@ -19,16 +19,16 @@ class Bucket {
         vector<Tile> tiles;
         
         // Maps a tile to its index
-        map<Vector2i, int> tileToIndex;
+        unordered_map<Vector2i, int> tileToIndex;
 
     public:
-        void insert(Tile tile);
+        void insert(const Tile & tile);
 
-        void updateTile(Vector2i tileCoords, Vector2i opToRemove);
+        void updateTile(const Vector2i & tileCoords, const Vector2i & opToRemove);
 
         Tile removeRandom();
 
-        Tile removeTile(Vector2i coordsToRemove);
+        Tile removeTile(const Vector2i & coordsToRemove);
 
-        bool isEmpty();
+        bool isEmpty() const;
 };

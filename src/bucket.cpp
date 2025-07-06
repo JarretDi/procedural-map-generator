@@ -1,23 +1,30 @@
 #include "bucket.h"
 
-void Bucket::insert(Tile tile) {
+void Bucket::insert(const Tile & tile) {
     tiles.push_back(tile);
-    tileToIndex[tile.getCoords()] = tiles.size();
+    tileToIndex[tile.getCoords()] = tiles.size() - 1;
 }
 
-void Bucket::updateTile(Vector2i tileCoords, Vector2i tileType) {
+void Bucket::updateTile(const Vector2i & tileCoords, const Vector2i & tileType) {
     int tileIndex = tileToIndex.at(tileCoords);
-    return tiles[tileIndex].removeType(tileType);
+    tiles[tileIndex].removeType(tileType);
 }
 
 Tile Bucket::removeRandom() {
-    std::srand(std::time(0));
-    int tileIndex = std::rand() % tiles.size();
+    if (tiles.empty()) {
+        throw std::runtime_error("Bucket is empty");
+    }
+
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, tiles.size() - 1);
+
+    int tileIndex = dist(gen);
 
     return removeTile(tiles[tileIndex].getCoords());
 }
 
-Tile Bucket::removeTile(Vector2i coordsToRemove) {
+Tile Bucket::removeTile(const Vector2i & coordsToRemove) {
     int tileIndex = tileToIndex[coordsToRemove];
 
     Vector2i lastCoords = tiles.back().getCoords();
@@ -33,6 +40,6 @@ Tile Bucket::removeTile(Vector2i coordsToRemove) {
     return ret;
 }
 
-bool Bucket::isEmpty() {
+bool Bucket::isEmpty() const {
     return tiles.size() == 0;
 }
