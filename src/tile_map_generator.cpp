@@ -1,18 +1,19 @@
 #include "tile_map_generator.h"
 
 void TileMapGenerator::_bind_methods() {
-    ClassDB::bind_method(D_METHOD("generate", "tileDict", "tileAtlas", "mapDimensions", "radius", "delayMS"), &TileMapGenerator::generate);
+    ClassDB::bind_method(D_METHOD("build", "tileDict", "tileAtlas", "mapDimensions", "radius"), &TileMapGenerator::build);
+    ClassDB::bind_method(D_METHOD("has_tiles_to_collapse"), &TileMapGenerator::hasTilesToCollapse);
+    ClassDB::bind_method(D_METHOD("collapse_tile"), &TileMapGenerator::collapseTile);
 }
 
 TileMapGenerator::TileMapGenerator() {
-
+    set_process(false);
 }
 
-void TileMapGenerator::generate(Dictionary tileDict, int tileAtlas, int mapDimensions, int radius, int delayMS) {
+void TileMapGenerator::build(Dictionary tileDict, int tileAtlas, int mapDimensions, int radius) {
     this->tileAtlas = tileAtlas;
     this->mapDimensions = mapDimensions;
     this->radius = radius;
-    this->delayMS = delayMS;
 
     Array tiles = tileDict.keys();
 
@@ -40,11 +41,6 @@ void TileMapGenerator::generate(Dictionary tileDict, int tileAtlas, int mapDimen
         for (int y = 0; y < mapDimensions; y++) {
             tail->bucket.insert(Tile({x,y}, types));
         }
-    }
-
-    while (hasTilesToCollapse()) {
-        collapseTile();
-        OS::get_singleton()->delay_msec(delayMS);
     }
 }
 

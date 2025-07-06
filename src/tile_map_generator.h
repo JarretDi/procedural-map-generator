@@ -42,17 +42,8 @@ class TileMapGenerator : public TileMapLayer {
         int tileAtlas;
         int mapDimensions;
         int radius;
-        int delayMS;
 
         void createBuckets(int length);
-
-        // picks a tile among those with the highest priority > 1
-        // picks a random tileType among its possible types
-        // adds string to corresponding location on map
-        Vector2i collapseTile();
-
-        // returns true if there are no more tiles in a node after collapsed
-        bool hasTilesToCollapse();
 
         // updates neighbouring tiles within radius of center based on tile rules
         void propagate(const Vector2i & center, const Vector2i & type);
@@ -65,9 +56,17 @@ class TileMapGenerator : public TileMapLayer {
     public:
         TileMapGenerator();
 
+        ~TileMapGenerator();
+
         // takes a godot dictionary (from the engine) sets typeRules to match it in c++
         // additionally runs the generator itself
-        void generate(Dictionary tileDict, int tileAtlas, int mapDimensions, int radius, int delayMS);
+        void build(Dictionary tileDict, int tileAtlas, int mapDimensions, int radius);
 
-        ~TileMapGenerator();
+        // returns true if there are no more tiles in a node after collapsed
+        bool hasTilesToCollapse();
+
+        // picks a tile among those with the highest priority > 1
+        // picks a random tileType among its possible types
+        // adds string to corresponding location on map
+        Vector2i collapseTile();
 };

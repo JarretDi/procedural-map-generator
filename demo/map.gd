@@ -5,7 +5,6 @@ extends Node2D
 
 @export var MAP_SIZE : int;
 @export var RADIUS : int;
-@export var DELAYMS : int;
 
 const ATLAS_ID = 0;
 
@@ -16,6 +15,7 @@ const FOREST = Vector2i(1,15);
 const MOUNTAIN = Vector2i(5,11);
 
 func _ready() -> void:
+	set_process(false);
 	for x in MAP_SIZE:
 		for y in MAP_SIZE:
 			base_layer.set_cell(Vector2i(x,y), ATLAS_ID, GRASS);
@@ -28,4 +28,11 @@ func _ready() -> void:
 		MOUNTAIN : [GRASS, FOREST, MOUNTAIN]
 	}
 	
-	gen_layer.generate(tileRules, ATLAS_ID, MAP_SIZE, RADIUS, DELAYMS)	
+	gen_layer.build(tileRules, ATLAS_ID, MAP_SIZE, RADIUS)	
+	set_process(true);
+
+func _process(delta: float) -> void:
+	if (gen_layer.has_tiles_to_collapse()):
+		gen_layer.collapse_tile()
+	else :
+		set_process(false);
