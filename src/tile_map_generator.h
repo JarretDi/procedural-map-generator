@@ -38,6 +38,7 @@ class TileMapGenerator : public TileMapLayer {
 
         std::set<Vector2i> types;
 
+        int tileAtlas;
         int mapDimensions;
         int radius;
 
@@ -60,7 +61,7 @@ class TileMapGenerator : public TileMapLayer {
         void updateTile(Vector2i tileCoords, Vector2i tileType);
     
     public:
-        TileMapGenerator(int mapDimensions, int radius = 1);
+        TileMapGenerator(int tileAtlas, int mapDimensions, int radius);
 
         // takes a godot dictionary (from the engine) sets typeRules to match it in c++
         // additionally runs the generator itself

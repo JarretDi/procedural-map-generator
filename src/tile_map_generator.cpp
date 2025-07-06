@@ -1,6 +1,6 @@
 #include "tile_map_generator.h"
 
-TileMapGenerator::TileMapGenerator(int mapDimensions, int radius) : mapDimensions(mapDimensions), radius(radius) {
+TileMapGenerator::TileMapGenerator(int tileAtlas, int mapDimensions, int radius) : tileAtlas(tileAtlas), mapDimensions(mapDimensions), radius(radius) {
 
 }
 
@@ -94,6 +94,7 @@ Vector2i TileMapGenerator::collapseTile() {
     Vector2i type = tile.collapseTile();
 
     //map[coords.x][coords.y] = type;
+
     propogate(coords, type);
     return type;
 }
