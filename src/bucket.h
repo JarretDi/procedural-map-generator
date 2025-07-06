@@ -26,7 +26,7 @@ class Bucket {
     public:
         void insert(Tile tile);
 
-        void updateTile(Vector2i tileCoords, string opToRemove);
+        void updateTile(Vector2i tileCoords, Vector2i opToRemove);
 
         Tile removeRandom();
 

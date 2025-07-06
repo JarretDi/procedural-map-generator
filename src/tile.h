@@ -13,20 +13,22 @@ using namespace godot;
 
 class Tile {
     private:
-
+        // Vector2i used for coords on map
         Vector2i coords;
-        set<string> possibleTiles;
+
+        // Vector2i used to get atlas coords
+        set<Vector2i> possibleTiles;
     
     public:
 
-        Tile(Vector2i coords, set<string> possibleTiles);
+        Tile(Vector2i coords, set<Vector2i> possibleTiles);
 
         int getPriority();
 
-        void removeType(string str);
+        void removeType(Vector2i type);
 
         Vector2i getCoords();
 
         // picks a random tileType among its options, and then returns it
-        string collapseTile();
+        Vector2i collapseTile();
 };

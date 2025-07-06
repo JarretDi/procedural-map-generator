@@ -1,6 +1,6 @@
 #include "bucket_queue.h"
 
-BucketQueue::BucketQueue(unordered_map<string, set<string>> & typeRules, int mapDimensions, int radius) {
+BucketQueue::BucketQueue(unordered_map<Vector2i, set<Vector2i>> & typeRules, int mapDimensions, int radius) {
     createBuckets(typeRules.size());
     radius = radius;
 
@@ -13,8 +13,6 @@ BucketQueue::BucketQueue(unordered_map<string, set<string>> & typeRules, int map
             tail->bucket.insert(Tile({x,y}, types));
         }
     }
-
-    map = vector(mapDimensions, vector<string>(mapDimensions, ""));
 
     while (hasTilesToCollapse()) {
         collapseTile();
@@ -61,7 +59,7 @@ bool BucketQueue::hasTilesToCollapse() {
     return false;
 }
 
-string BucketQueue::collapseTile() {
+Vector2i BucketQueue::collapseTile() {
     BQNode * temp = head;
 
     while (temp != nullptr) {
@@ -74,14 +72,14 @@ string BucketQueue::collapseTile() {
 
     Tile tile = temp->bucket.removeRandom();
     Vector2i coords = tile.getCoords();
-    string type = tile.collapseTile();
+    Vector2i type = tile.collapseTile();
 
-    map[coords.x][coords.y] = type;
+    //map[coords.x][coords.y] = type;
     propogate(coords, type);
     return type;
 }
 
-void BucketQueue::propogate(Vector2i center, string type) {
+void BucketQueue::propogate(Vector2i center, Vector2i type) {
     for (int x = center.x - radius; x <= center.x + radius; x++) {
         for (int y = center.y - radius; y <= center.y + radius; y++) {
             updateTile(center, type);
@@ -89,12 +87,12 @@ void BucketQueue::propogate(Vector2i center, string type) {
     }
 }
 
-void BucketQueue::updateTile(Vector2i tileCoords, string tileType) {
-    set<string> valid = typeRules[tileType];
+void BucketQueue::updateTile(Vector2i tileCoords, Vector2i tileType) {
+    set<Vector2i> valid = typeRules[tileType];
 
-    set<string> toRemove;
+    set<Vector2i> toRemove;
 
-    for (string type : types) {
+    for (Vector2i type : types) {
         //i.e. if it isnt in valid
         if (valid.find(type) == valid.end()) {
             toRemove.insert(type);
@@ -103,7 +101,7 @@ void BucketQueue::updateTile(Vector2i tileCoords, string tileType) {
 
     for (BQNode * temp = head; temp != nullptr; temp = temp->next) {
         try {
-            for (string type : toRemove) {
+            for (Vector2i type : toRemove) {
                 temp->bucket.updateTile(tileCoords, type);
             }
 
