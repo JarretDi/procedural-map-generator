@@ -1,6 +1,6 @@
 #include "tile.h"
 
-Tile::Tile(const Vector2i coords, const set<Vector2i> possibleTiles) : coords(coords), possibleTiles(possibleTiles) {
+Tile::Tile(const Vector2i & coords, const set<Vector2i> & possibleTiles) : coords(coords), possibleTiles(possibleTiles) {
 
 }
 
@@ -8,7 +8,7 @@ int Tile::getPriority() const {
     return possibleTiles.size();
 }
 
-void Tile::removeType(Vector2i str) {
+void Tile::removeType(const Vector2i & str) {
     possibleTiles.erase(str);
 }
 

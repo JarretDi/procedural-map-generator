@@ -18,11 +18,11 @@ class Tile {
     
     public:
 
-        Tile(const Vector2i coords, const set<Vector2i> possibleTiles);
+        Tile(const Vector2i & coords, const set<Vector2i> & possibleTiles);
 
         int getPriority() const;
 
-        void removeType(const Vector2i type);
+        void removeType(const Vector2i & type);
 
         Vector2i getCoords() const;
 
