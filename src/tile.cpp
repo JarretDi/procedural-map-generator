@@ -1,10 +1,10 @@
 #include "tile.h"
 
-Tile::Tile(Vector2i coords, set<Vector2i> possibleTiles) : coords(coords), possibleTiles(possibleTiles) {
+Tile::Tile(const Vector2i coords, const set<Vector2i> possibleTiles) : coords(coords), possibleTiles(possibleTiles) {
 
 }
 
-int Tile::getPriority() {
+int Tile::getPriority() const {
     return possibleTiles.size();
 }
 
@@ -12,15 +12,22 @@ void Tile::removeType(Vector2i str) {
     possibleTiles.erase(str);
 }
 
-Vector2i Tile::getCoords() {
+Vector2i Tile::getCoords() const {
     return coords;
 }
 
-Vector2i Tile::collapseTile() {
-    auto it = possibleTiles.begin();
+Vector2i Tile::collapseTile(){
+    if (possibleTiles.empty()) {
+        return Vector2i(0, 0);
+    }
 
-    std::srand(std::time(0));
-    int selectedIndex = std::rand() % possibleTiles.size();
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, possibleTiles.size() - 1);
+
+    int selectedIndex = dist(gen);
+
+    auto it = possibleTiles.begin();
 
     for (int i = 0; i < selectedIndex; i++) {
         it++;

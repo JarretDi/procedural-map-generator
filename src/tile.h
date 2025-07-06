@@ -1,9 +1,8 @@
 #pragma once
 
 #include <set>
+#include <random>
 
-#include <cstdlib>
-#include <ctime> 
 #include <godot_cpp/variant/vector2i.hpp>
 
 using std::set;
@@ -19,13 +18,13 @@ class Tile {
     
     public:
 
-        Tile(Vector2i coords, set<Vector2i> possibleTiles);
+        Tile(const Vector2i coords, const set<Vector2i> possibleTiles);
 
-        int getPriority();
+        int getPriority() const;
 
-        void removeType(Vector2i type);
+        void removeType(const Vector2i type);
 
-        Vector2i getCoords();
+        Vector2i getCoords() const;
 
         // picks a random tileType among its options, and then returns it
         Vector2i collapseTile();
