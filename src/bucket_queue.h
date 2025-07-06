@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include "bucket.h"
+#include "vector2i_hash.hpp"
 
 using std::set;
 using std::string;
