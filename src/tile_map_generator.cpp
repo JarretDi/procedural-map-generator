@@ -44,6 +44,10 @@ void TileMapGenerator::build(Dictionary tileDict, int tileAtlas, int mapDimensio
     }
 }
 
+void TileMapGenerator::seed(int chunks, Array types, bool inOrder) {
+    
+}
+
 TileMapGenerator::~TileMapGenerator() {
     BQNode * temp = head;
 

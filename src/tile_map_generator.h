@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include "bucket.h"
 #include "vector2i_hash.hpp"
+#include "random_generator.hpp"
 
 #include <godot_cpp/classes/object.hpp>
 #include <godot_cpp/classes/os.hpp>
@@ -59,8 +60,13 @@ class TileMapGenerator : public TileMapLayer {
         ~TileMapGenerator();
 
         // takes a godot dictionary (from the engine) sets typeRules to match it in c++
-        // additionally runs the generator itself
-        void build(Dictionary tileDict, int tileAtlas, int mapDimensions, int radius);
+        void build(Dictionary tileDict, int tileAtlas, int mapDimensions, int radius = 1);
+
+        // since the generation moves out from one area, generating a tile within a chunk helps create variety
+        // generates one tile for each chunk (so there will be chunks^2 tiles placed)
+        // takes in an optional array as to what should be seeded,
+        // inOrder is whether it should be chosen randomly from types, or in the order given (wraps)
+        void seed(int chunks, Array types = Array(), bool inOrder = false);
 
         // returns true if there are no more tiles in a node after collapsed
         bool hasTilesToCollapse();
