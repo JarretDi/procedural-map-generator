@@ -22,7 +22,7 @@ class Tile {
 
         int getPriority() const;
 
-        void removeType(const Vector2i & type);
+        void removeTypesNotIn(const set<Vector2i> & types);
 
         Vector2i getCoords() const;
 

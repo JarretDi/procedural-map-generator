@@ -8,8 +8,15 @@ int Tile::getPriority() const {
     return possibleTiles.size();
 }
 
-void Tile::removeType(const Vector2i & str) {
-    possibleTiles.erase(str);
+void Tile::removeTypesNotIn(const set<Vector2i> & types) {
+    for (auto it = possibleTiles.begin(); it != possibleTiles.end(); ) {
+        // i.e. if it is not in types
+        if (types.find(*it) == types.end()) {
+            it = possibleTiles.erase(it);
+        } else {
+            it++;
+        }
+    }
 }
 
 Vector2i Tile::getCoords() const {
