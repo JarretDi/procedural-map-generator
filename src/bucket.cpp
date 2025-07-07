@@ -25,13 +25,15 @@ Tile Bucket::removeRandom() {
 }
 
 Tile Bucket::removeTile(const Vector2i & coordsToRemove) {
-    int tileIndex = tileToIndex[coordsToRemove];
+    int tileIndex = tileToIndex.at(coordsToRemove);
 
     Vector2i lastCoords = tiles.back().getCoords();
 
-    std::swap(tiles[tileIndex], tiles.back());
+    if (tileIndex != tiles.size() - 1) {
+        std::swap(tiles[tileIndex], tiles.back());
+        tileToIndex[lastCoords] = tileIndex;
+    } 
 
-    tileToIndex[lastCoords] = tileIndex;
     tileToIndex.erase(coordsToRemove);
 
     Tile ret = tiles.back();
