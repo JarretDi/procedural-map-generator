@@ -156,3 +156,12 @@ void TileMapGenerator::updateTile(const Vector2i & tileCoords, const Vector2i & 
         }
     }
 }
+
+TileMapGenerator::BQNode * TileMapGenerator::findTile(Vector2i tileCoords) {
+    for (BQNode * temp = head; temp != nullptr; temp = temp->next) {
+        if (temp->bucket.containsTile(tileCoords)) {
+            return temp;
+        }
+    }
+    return nullptr;
+}

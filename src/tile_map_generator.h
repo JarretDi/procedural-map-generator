@@ -53,6 +53,8 @@ class TileMapGenerator : public TileMapLayer {
         // removes those types from given tile
         // moves the tile to the right bucket based on new possibilities
         void updateTile(const Vector2i & tileCoords, const Vector2i & tileType);
+
+        BQNode * findTile(Vector2i tileCoords);
     
     public:
         TileMapGenerator();
