@@ -27,8 +27,6 @@ class Bucket {
     public:
         void insert(const Tile & tile);
 
-        void updateTile(const Vector2i & tileCoords, const Vector2i & opToRemove);
-
         Tile removeRandom();
 
         Tile removeTile(const Vector2i & coordsToRemove);
@@ -37,5 +35,5 @@ class Bucket {
 
         bool isEmpty() const;
 
-        const Tile & operator[](const Vector2i & tileCoords) const;
+        Tile & operator[](const Vector2i & tileCoords);
 };

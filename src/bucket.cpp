@@ -5,11 +5,6 @@ void Bucket::insert(const Tile & tile) {
     tileToIndex[tile.getCoords()] = tiles.size() - 1;
 }
 
-void Bucket::updateTile(const Vector2i & tileCoords, const Vector2i & tileType) {
-    int tileIndex = tileToIndex.at(tileCoords);
-    tiles[tileIndex].removeType(tileType);
-}
-
 Tile Bucket::removeRandom() {
     if (tiles.empty()) {
         throw std::runtime_error("Bucket is empty");
@@ -46,7 +41,7 @@ bool Bucket::isEmpty() const {
     return tiles.empty();
 }
 
-const Tile & Bucket::operator[](const Vector2i & tileCoords) const {
+Tile & Bucket::operator[](const Vector2i & tileCoords) {
     auto index = tileToIndex.find(tileCoords);
     if (index != tileToIndex.end()) {
         return tiles[index->second];
