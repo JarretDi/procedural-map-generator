@@ -21,11 +21,7 @@ Vector2i Tile::collapseTile(){
         return Vector2i(0, 0);
     }
 
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(0, possibleTiles.size() - 1);
-
-    int selectedIndex = dist(gen);
+    int selectedIndex = RandomGenerator::getInt(0, possibleTiles.size() - 1);
 
     auto it = possibleTiles.begin();
 

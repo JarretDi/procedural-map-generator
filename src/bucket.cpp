@@ -15,11 +15,7 @@ Tile Bucket::removeRandom() {
         throw std::runtime_error("Bucket is empty");
     }
 
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(0, tiles.size() - 1);
-
-    int tileIndex = dist(gen);
+    int tileIndex = RandomGenerator::getInt(0, tiles.size() - 1);
 
     return removeTile(tiles[tileIndex].getCoords());
 }

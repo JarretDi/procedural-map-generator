@@ -1,7 +1,7 @@
 #pragma once
 
 #include <set>
-#include <random>
+#include "random_generator.hpp"
 
 #include <godot_cpp/variant/vector2i.hpp>
 

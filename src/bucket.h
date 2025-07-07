@@ -9,6 +9,7 @@
 #include <stdexcept>
 
 #include "vector2i_hash.hpp"
+#include "random_generator.hpp"
 
 using std::vector;
 using std::unordered_map;
