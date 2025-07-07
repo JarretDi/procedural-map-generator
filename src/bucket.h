@@ -34,6 +34,4 @@ class Bucket {
         bool containsTile(const Vector2i & tileCoords) const;
 
         bool isEmpty() const;
-
-        Tile & operator[](const Vector2i & tileCoords);
 };
