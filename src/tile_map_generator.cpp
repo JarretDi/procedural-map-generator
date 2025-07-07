@@ -88,22 +88,31 @@ bool TileMapGenerator::hasTilesToCollapse() {
     return false;
 }
 
-Vector2i TileMapGenerator::collapseTile() {
-    BQNode * temp = head;
+Vector2i TileMapGenerator::collapseTile(const Vector2i & givenCoords, const Vector2i & givenType) {
+    Vector2i coords;
+    Vector2i type;
 
-    while (temp != nullptr) {
-        if (!temp->bucket.isEmpty()) {
-            break;
-        } else {
-            temp = temp->next;
+    // i.e., if coords is not given do it randomly
+    if (givenCoords == Vector2i(-1, -1)) {
+        BQNode * temp = head;
+
+        while (temp != nullptr) {
+            if (!temp->bucket.isEmpty()) {
+                break;
+            } else {
+                temp = temp->next;
+            }
         }
+        Tile tile = temp->bucket.removeRandom();
+        coords = tile.getCoords();
+        type = tile.collapseTile();
+    } else {
+        BQNode * temp = findTile(givenCoords);
+        temp->bucket.removeTile(givenCoords);
+        coords = givenCoords;
+        type = givenType;
     }
 
-    Tile tile = temp->bucket.removeRandom();
-    Vector2i coords = tile.getCoords();
-    Vector2i type = tile.collapseTile();
-
-    //map[coords.x][coords.y] = type;
     set_cell(coords, tileAtlas, type);
 
     propagate(coords, type);
@@ -122,38 +131,19 @@ void TileMapGenerator::propagate(const Vector2i & center, const Vector2i & type)
 }
 
 void TileMapGenerator::updateTile(const Vector2i & tileCoords, const Vector2i & tileType) {
-    std::set<Vector2i> valid = typeRules[tileType];
+    BQNode * tileLoc = findTile(tileCoords);
 
-    std::set<Vector2i> toRemove;
+    if (tileLoc != nullptr) {
+        Tile tile = tileLoc->bucket.removeTile(tileCoords);
+        tile.removeTypesNotIn(typeRules[tileType]);
+        int priority = tile.getPriority();
 
-    for (Vector2i type : types) {
-        //i.e. if it isnt in valid
-        if (valid.find(type) == valid.end()) {
-            toRemove.insert(type);
+        // find and insert into the right bucket
+        BQNode * temp2 = head;
+        for (int i = 0; i < priority - 1; i++) {
+            temp2 = temp2->next;
         }
-    }
-
-    for (BQNode * temp = head; temp != nullptr; temp = temp->next) {
-        try {
-            for (Vector2i type : toRemove) {
-                temp->bucket.updateTile(tileCoords, type);
-            }
-
-            //if we get here, we haven't caught out_of_range
-            Tile tile = temp->bucket.removeTile(tileCoords);
-            int priority = tile.getPriority();
-
-            // find and insert into the right bucket
-            BQNode * temp2 = head;
-            for (int i = 0; i < priority - 1; i++) {
-                temp2 = temp2->next;
-            }
-            temp2->bucket.insert(tile);
-            return;
-
-        } catch (const std::out_of_range& e) {
-            continue;
-        }
+        temp2->bucket.insert(tile);
     }
 }
 
@@ -165,3 +155,4 @@ TileMapGenerator::BQNode * TileMapGenerator::findTile(Vector2i tileCoords) {
     }
     return nullptr;
 }
+

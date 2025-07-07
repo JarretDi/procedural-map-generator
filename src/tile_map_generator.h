@@ -2,6 +2,7 @@
 
 #include <set>
 #include <unordered_map>
+
 #include "bucket.h"
 #include "vector2i_hash.hpp"
 #include "random_generator.hpp"
@@ -76,5 +77,6 @@ class TileMapGenerator : public TileMapLayer {
         // picks a tile among those with the highest priority > 1
         // picks a random tileType among its possible types
         // adds string to corresponding location on map
-        Vector2i collapseTile();
+        // if given a coordinate, collapses that one instead of doing it randomly
+        Vector2i collapseTile(const Vector2i & givenCoords = Vector2i(-1, -1), const Vector2i & givenType = Vector2i(-1, -1));
 };
