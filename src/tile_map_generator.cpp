@@ -45,7 +45,28 @@ void TileMapGenerator::build(Dictionary tileDict, int tileAtlas, int mapDimensio
 }
 
 void TileMapGenerator::seed(int chunks, Array types, bool inOrder) {
-    
+    int chunkLength = mapDimensions / chunks;
+    int index = 0;
+
+    for (int x = 0; x < chunks; x++) {
+        for (int y = 0; y < chunks; y++) {
+            int chunkx = RandomGenerator::getInt(
+                x * chunkLength,
+                std::min((x + 1) * chunkLength, mapDimensions));
+            int chunky = RandomGenerator::getInt(
+                y * chunkLength,
+                std::min((y + 1) * chunkLength, mapDimensions));
+            
+            Vector2i tile(chunkx, chunky);
+
+            if (inOrder) {
+                collapseTile(tile, types[index % types.size()]);
+                index++;
+            } else {
+                collapseTile(tile, types[RandomGenerator::getInt(0, types.size() - 1)]);
+            }
+        }
+    }
 }
 
 TileMapGenerator::~TileMapGenerator() {
