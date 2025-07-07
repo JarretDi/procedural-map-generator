@@ -45,3 +45,12 @@ bool Bucket::containsTile(const Vector2i & tileCoords) const {
 bool Bucket::isEmpty() const {
     return tiles.empty();
 }
+
+const Tile & Bucket::operator[](const Vector2i & tileCoords) const {
+    auto index = tileToIndex.find(tileCoords);
+    if (index != tileToIndex.end()) {
+        return tiles[index->second];
+    } else {
+        throw std::out_of_range("Tile not found in bucket");
+    }
+}
