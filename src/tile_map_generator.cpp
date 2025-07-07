@@ -2,6 +2,7 @@
 
 void TileMapGenerator::_bind_methods() {
     ClassDB::bind_method(D_METHOD("build", "tileDict", "tileAtlas", "mapDimensions", "radius"), &TileMapGenerator::build);
+    ClassDB::bind_method(D_METHOD("seed", "chunks", "types", "in_order"), &TileMapGenerator::seed);
     ClassDB::bind_method(D_METHOD("has_tiles_to_collapse"), &TileMapGenerator::hasTilesToCollapse);
     ClassDB::bind_method(D_METHOD("collapse_tile"), &TileMapGenerator::collapseTile);
 }
@@ -45,6 +46,12 @@ void TileMapGenerator::build(Dictionary tileDict, int tileAtlas, int mapDimensio
 }
 
 void TileMapGenerator::seed(int chunks, Array types, bool inOrder) {
+    if (types.size() == 0) {
+        for (Vector2i type : this->types) {
+            types.push_back(type);
+        }
+    }
+
     int chunkLength = mapDimensions / chunks;
     int index = 0;
 
