@@ -33,5 +33,7 @@ class Bucket {
 
         Tile removeTile(const Vector2i & coordsToRemove);
 
+        bool containsTile(const Vector2i & tileCoords) const;
+
         bool isEmpty() const;
 };
