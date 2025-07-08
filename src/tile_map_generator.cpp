@@ -87,26 +87,21 @@ void TileMapGenerator::refine() {
 
             Vector2i types[4] = {upType, downType, leftType, rightType};
 
-            Vector2i currentType;
+            unordered_map<Vector2i, int> map;
 
             for (int i = 0; i < 4; i++) {
-                if (types[i] != Vector2i(-1,-1)) {
-                    currentType = types[i];
-                    break;
+                Vector2i type = types[i];
+                if (map.find(type) == map.end()) {
+                    map[type] = 0;
                 }
+                map[type]++;
             }
 
-            bool same = true;
-
-            for (int i = 0; i < 4; i++) {
-                if (types[i] != Vector2i(-1,-1) && types[i] != currentType) {
-                    same = false;
+            for (auto it = map.begin(); it != map.end(); it++) {
+                if (it->second >= 3) {
+                    set_cell(Vector2i(x,y), tileAtlas, it->first);
                     break;
                 }
-            }
-
-            if (same) {
-                set_cell(Vector2i(x, y), tileAtlas, currentType);
             }
         }
     }

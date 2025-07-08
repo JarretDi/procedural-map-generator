@@ -21,15 +21,15 @@ func _ready() -> void:
 			base_layer.set_cell(Vector2i(x,y), ATLAS_ID, GRASS);
 	
 	var tileRules = {
-		WATER : [WATER, SAND],
-		SAND : [WATER, SAND, GRASS, FOREST, MOUNTAIN],
-		GRASS : [SAND, GRASS, FOREST, MOUNTAIN],
-		FOREST : [SAND, GRASS, FOREST, MOUNTAIN],
-		MOUNTAIN : [SAND, GRASS, FOREST, MOUNTAIN],
+		WATER : [WATER, SAND, GRASS],
+		SAND : [WATER, SAND, GRASS],
+		GRASS : [WATER, SAND, GRASS, FOREST, MOUNTAIN],
+		FOREST : [GRASS, FOREST, MOUNTAIN],
+		MOUNTAIN : [GRASS, FOREST, MOUNTAIN],
 	}
 	
 	gen_layer.build(tileRules, ATLAS_ID, MAP_SIZE, RADIUS)	
-	gen_layer.seed(16, [GRASS], true)
+	gen_layer.seed(4, [], false)
 	set_process(true);
 
 func _process(delta: float) -> void:
@@ -37,4 +37,3 @@ func _process(delta: float) -> void:
 		gen_layer.collapse_tile()
 	else :
 		gen_layer.refine();
-		set_process(false);
