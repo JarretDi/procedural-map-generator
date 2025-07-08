@@ -5,6 +5,7 @@ void TileMapGenerator::_bind_methods() {
     ClassDB::bind_method(D_METHOD("seed", "chunks", "types", "in_order"), &TileMapGenerator::seed);
     ClassDB::bind_method(D_METHOD("has_tiles_to_collapse"), &TileMapGenerator::hasTilesToCollapse);
     ClassDB::bind_method(D_METHOD("collapse_tile"), &TileMapGenerator::collapseTile);
+    ClassDB::bind_method(D_METHOD("refine"), &TileMapGenerator::refine);
 }
 
 TileMapGenerator::TileMapGenerator() {
@@ -71,6 +72,41 @@ void TileMapGenerator::seed(int chunks, Array types, bool inOrder) {
                 index++;
             } else {
                 collapseTile(tile, types[RandomGenerator::getInt(0, types.size() - 1)]);
+            }
+        }
+    }
+}
+
+void TileMapGenerator::refine() {
+    for (int x = 0; x < mapDimensions; x++) {
+        for (int y = 0; y < mapDimensions; y++) {
+            Vector2i upType = get_cell_atlas_coords(Vector2i(x, y-1));
+            Vector2i downType = get_cell_atlas_coords(Vector2i(x, y+1));
+            Vector2i leftType = get_cell_atlas_coords(Vector2i(x-1, y));
+            Vector2i rightType = get_cell_atlas_coords(Vector2i(x+1, y));
+
+            Vector2i types[4] = {upType, downType, leftType, rightType};
+
+            Vector2i currentType;
+
+            for (int i = 0; i < 4; i++) {
+                if (types[i] != Vector2i(-1,-1)) {
+                    currentType = types[i];
+                    break;
+                }
+            }
+
+            bool same = true;
+
+            for (int i = 0; i < 4; i++) {
+                if (types[i] != Vector2i(-1,-1) && types[i] != currentType) {
+                    same = false;
+                    break;
+                }
+            }
+
+            if (same) {
+                set_cell(Vector2i(x, y), tileAtlas, currentType);
             }
         }
     }

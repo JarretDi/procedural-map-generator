@@ -81,4 +81,9 @@ class TileMapGenerator : public TileMapLayer {
         void collapseTile(const Vector2i & givenCoords = Vector2i(-1, -1), const Vector2i & givenType = Vector2i(-1, -1));
 
         void collapseRandomTile();
+
+        // goes through all the tiles
+        // if a tile is surrounded by 4 different identical ones,
+        // switches to that type
+        void refine();
 };
