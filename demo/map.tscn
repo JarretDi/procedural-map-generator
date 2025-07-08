@@ -2213,8 +2213,9 @@ texture = ExtResource("1_c7s6e")
 sources/0 = SubResource("TileSetAtlasSource_e0an3")
 
 [node name="Node2D" type="Node2D"]
+scale = Vector2(2, 2)
 script = ExtResource("2_wijl4")
-MAP_SIZE = 64
+MAP_SIZE = 32
 RADIUS = 2
 
 [node name="BaseLayer" type="TileMapLayer" parent="."]

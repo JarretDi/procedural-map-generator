@@ -37,3 +37,4 @@ func _process(delta: float) -> void:
 		gen_layer.collapse_tile()
 	else :
 		gen_layer.refine();
+		set_process(false);

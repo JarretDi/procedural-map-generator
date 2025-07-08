@@ -80,28 +80,36 @@ void TileMapGenerator::seed(int chunks, Array types, bool inOrder) {
 void TileMapGenerator::refine() {
     for (int x = 0; x < mapDimensions; x++) {
         for (int y = 0; y < mapDimensions; y++) {
-            Vector2i upType = get_cell_atlas_coords(Vector2i(x, y-1));
-            Vector2i downType = get_cell_atlas_coords(Vector2i(x, y+1));
-            Vector2i leftType = get_cell_atlas_coords(Vector2i(x-1, y));
-            Vector2i rightType = get_cell_atlas_coords(Vector2i(x+1, y));
+            Vector2i currentType = get_cell_atlas_coords({x, y});
+
+            Vector2i upType = get_cell_atlas_coords({x, y-1});
+            Vector2i downType = get_cell_atlas_coords({x, y+1});
+            Vector2i leftType = get_cell_atlas_coords({x-1, y});
+            Vector2i rightType = get_cell_atlas_coords({x+1, y});
 
             Vector2i types[4] = {upType, downType, leftType, rightType};
 
-            unordered_map<Vector2i, int> map;
+            unordered_map<Vector2i, int> count;
 
-            for (int i = 0; i < 4; i++) {
-                Vector2i type = types[i];
-                if (map.find(type) == map.end()) {
-                    map[type] = 0;
-                }
-                map[type]++;
+            for (Vector2i type : types) {
+                if (count.find(type) == count.end()) count[type] = 0;
+                count[type]++;
             }
 
-            for (auto it = map.begin(); it != map.end(); it++) {
-                if (it->second >= 3) {
-                    set_cell(Vector2i(x,y), tileAtlas, it->first);
-                    break;
+            Vector2i dominantType = Vector2i(-1, -1);
+            int maxSoFar = 0;
+
+            for (auto [type, freq] : count) {
+                if (freq > maxSoFar) {
+                    dominantType = type;
+                    maxSoFar = freq; 
                 }
+            }
+
+            // if has only one neighbor of same type, dies
+            // OR if surrounded by 3 or more of another type, switches
+            if (count[currentType] <= 1 || maxSoFar >= 3) {
+                set_cell({x,y}, tileAtlas, dominantType);
             }
         }
     }
