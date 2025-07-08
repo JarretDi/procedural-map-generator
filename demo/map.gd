@@ -29,11 +29,12 @@ func _ready() -> void:
 	}
 	
 	gen_layer.build(tileRules, ATLAS_ID, MAP_SIZE, RADIUS)	
-	gen_layer.seed(6, [], true)
+	gen_layer.seed(16, [GRASS], true)
 	set_process(true);
 
 func _process(delta: float) -> void:
 	if (gen_layer.has_tiles_to_collapse()):
-		gen_layer.collapse_tile(Vector2i(-1,-1), Vector2i(-1,-1))
+		gen_layer.collapse_tile()
 	else :
+		gen_layer.refine();
 		set_process(false);

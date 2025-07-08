@@ -4,7 +4,7 @@ void TileMapGenerator::_bind_methods() {
     ClassDB::bind_method(D_METHOD("build", "tileDict", "tileAtlas", "mapDimensions", "radius"), &TileMapGenerator::build);
     ClassDB::bind_method(D_METHOD("seed", "chunks", "types", "in_order"), &TileMapGenerator::seed);
     ClassDB::bind_method(D_METHOD("has_tiles_to_collapse"), &TileMapGenerator::hasTilesToCollapse);
-    ClassDB::bind_method(D_METHOD("collapse_tile"), &TileMapGenerator::collapseTile);
+    ClassDB::bind_method(D_METHOD("collapse_tile"), &TileMapGenerator::collapseRandomTile);
     ClassDB::bind_method(D_METHOD("refine"), &TileMapGenerator::refine);
 }
 
@@ -60,10 +60,10 @@ void TileMapGenerator::seed(int chunks, Array types, bool inOrder) {
         for (int y = 0; y < chunks; y++) {
             int chunkx = RandomGenerator::getInt(
                 x * chunkLength,
-                std::min((x + 1) * chunkLength, mapDimensions));
+                std::min((x + 1) * chunkLength - 1, mapDimensions - 1));
             int chunky = RandomGenerator::getInt(
                 y * chunkLength,
-                std::min((y + 1) * chunkLength, mapDimensions));
+                std::min((y + 1) * chunkLength - 1, mapDimensions - 1));
             
             Vector2i tile(chunkx, chunky);
 

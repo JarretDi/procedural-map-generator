@@ -83,7 +83,7 @@ class TileMapGenerator : public TileMapLayer {
         void collapseRandomTile();
 
         // goes through all the tiles
-        // if a tile is surrounded by 4 different identical ones,
+        // if a tile is surrounded by 3 different identical ones,
         // switches to that type
         void refine();
 };
