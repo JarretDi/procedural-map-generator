@@ -29,7 +29,7 @@ func _ready() -> void:
 	}
 	
 	gen_layer.build(tileRules, ATLAS_ID, MAP_SIZE, RADIUS)	
-	gen_layer.seed(4, [SAND, FOREST], false)
+	gen_layer.seed(6, [], true)
 	set_process(true);
 
 func _process(delta: float) -> void:

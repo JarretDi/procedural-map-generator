@@ -78,5 +78,7 @@ class TileMapGenerator : public TileMapLayer {
         // picks a random tileType among its possible types
         // adds string to corresponding location on map
         // if given a coordinate, collapses that one instead of doing it randomly
-        Vector2i collapseTile(const Vector2i & givenCoords = Vector2i(-1, -1), const Vector2i & givenType = Vector2i(-1, -1));
+        void collapseTile(const Vector2i & givenCoords = Vector2i(-1, -1), const Vector2i & givenType = Vector2i(-1, -1));
+
+        void collapseRandomTile();
 };

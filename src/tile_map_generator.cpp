@@ -116,35 +116,35 @@ bool TileMapGenerator::hasTilesToCollapse() {
     return false;
 }
 
-Vector2i TileMapGenerator::collapseTile(const Vector2i & givenCoords, const Vector2i & givenType) {
-    Vector2i coords;
-    Vector2i type;
-
-    // i.e., if coords is not given do it randomly
-    if (givenCoords == Vector2i(-1, -1)) {
-        BQNode * temp = head;
-
-        while (temp != nullptr) {
-            if (!temp->bucket.isEmpty()) {
-                break;
-            } else {
-                temp = temp->next;
-            }
-        }
-        Tile tile = temp->bucket.removeRandom();
-        coords = tile.getCoords();
-        type = tile.collapseTile();
-    } else {
-        BQNode * temp = findTile(givenCoords);
-        temp->bucket.removeTile(givenCoords);
-        coords = givenCoords;
-        type = givenType;
-    }
+void TileMapGenerator::collapseTile(const Vector2i & givenCoords, const Vector2i & givenType) {
+    BQNode * temp = findTile(givenCoords);
+    temp->bucket.removeTile(givenCoords);
+    Vector2i coords = givenCoords;
+    Vector2i type = givenType;
 
     set_cell(coords, tileAtlas, type);
 
     propagate(coords, type);
-    return type;
+}
+
+void TileMapGenerator::collapseRandomTile() {
+    BQNode * temp = head;
+
+    while (temp != nullptr) {
+        if (!temp->bucket.isEmpty()) {
+            break;
+        } else {
+            temp = temp->next;
+        }
+    }
+
+    Tile tile = temp->bucket.removeRandom();
+    Vector2i coords = tile.getCoords();
+    Vector2i type = tile.collapseTile();
+
+    set_cell(coords, tileAtlas, type);
+
+    propagate(coords, type);
 }
 
 void TileMapGenerator::propagate(const Vector2i & center, const Vector2i & type) {
