@@ -2218,7 +2218,9 @@ MAP_SIZE = 64
 RADIUS = 3
 
 [node name="BaseLayer" type="TileMapLayer" parent="."]
+scale = Vector2(2, 2)
 tile_set = SubResource("TileSet_e0an3")
 
 [node name="GenLayer" type="TileMapGenerator" parent="."]
+scale = Vector2(2, 2)
 tile_set = SubResource("TileSet_p5pve")
