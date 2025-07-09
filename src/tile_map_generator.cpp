@@ -101,7 +101,7 @@ void TileMapGenerator::refine() {
             int maxSoFar = 0;
 
             for (auto [type, freq] : count) {
-                if (freq > maxSoFar) {
+                if (freq > maxSoFar && type != Vector2i(-1, -1)) {
                     dominantType = type;
                     maxSoFar = freq; 
                 }
