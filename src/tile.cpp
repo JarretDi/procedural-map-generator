@@ -1,44 +1,40 @@
 #include "tile.h"
 
-Tile::Tile(const Vector2i & coords, const set<Vector2i> & possibleTiles) : coords(coords), possibleTiles(possibleTiles) {
-
+Tile::Tile(const Vector2i & coords, int typeCount) : coords(coords) {
+    for (int i = 0; i < typeCount; i++) {
+        possibleTiles.set(i);
+    }
 }
 
 int Tile::getPriority() const {
-    return possibleTiles.size();
+    return possibleTiles.count();
 }
 
-void Tile::removeTypesNotIn(const set<Vector2i> & types) {
-    for (auto it = possibleTiles.begin(); it != possibleTiles.end(); ) {
-        // i.e. if it is not in types
-        if (types.find(*it) == types.end()) {
-            it = possibleTiles.erase(it);
-        } else {
-            it++;
-        }
-    }
+void Tile::removeTypesNotIn(const bitset<32> & types) {
+    possibleTiles &= types;
 }
 
 Vector2i Tile::getCoords() const {
     return coords;
 }
 
-Vector2i Tile::collapseTile(){
-    if (possibleTiles.empty()) {
-        return Vector2i(0, 0);
+int Tile::collapseTile(){
+    int count = possibleTiles.count();
+
+    if (count == 0) {
+        return -1;
     }
 
-    int selectedIndex = RandomGenerator::getInt(0, possibleTiles.size() - 1);
+    int index = RandomGenerator::getInt(0, count - 1);
 
-    auto it = possibleTiles.begin();
-
-    for (int i = 0; i < selectedIndex; i++) {
-        it++;
+    for (int i = 0; i < possibleTiles.size(); i++) {
+        if (possibleTiles[i]) {
+            if (index == 0) {
+                return i;
+            } else {
+                index--;
+            }
+        }
     }
-
-    Vector2i selectedType = *it;
-
-    possibleTiles.clear();
-
-    return selectedType;
+    return -1;
 }
