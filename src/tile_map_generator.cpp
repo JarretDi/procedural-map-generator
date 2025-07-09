@@ -115,44 +115,13 @@ void TileMapGenerator::refine() {
     }
 }
 
-TileMapGenerator::~TileMapGenerator() {
-    BQNode * temp = head;
-
-    while (temp != nullptr) {
-        BQNode * next = temp->next;
-        delete temp;
-        temp = next;
-    }
-
-    head = nullptr;
-    tail = nullptr;
-}
-
-void TileMapGenerator::createBuckets(int size) {
-    head = new BQNode();
-    BQNode * temp = head;
-
-    for (int i = 0; i < size; i++) {
-        BQNode * next = new BQNode();
-        temp->next = next;
-        next->prev = temp;
-        temp = next;
-    }
-
-    tail = temp;
-}
-
 bool TileMapGenerator::hasTilesToCollapse() {
-    BQNode * temp = head;
-
-    while (temp != nullptr) {
-        if (!temp->bucket.isEmpty()) {
-            return true;
-        } else {
-            temp = temp->next;
+    for (int i = 0; i < buckets.size(); i++) {
+        if (!buckets[i].isEmpty()) {
+            return false;
         }
     }
-    return false;
+    return true;
 }
 
 void TileMapGenerator::collapseTile(const Vector2i & givenCoords, const Vector2i & givenType) {
@@ -215,13 +184,13 @@ void TileMapGenerator::updateTile(const Vector2i & tileCoords, const Vector2i & 
     }
 }
 
-TileMapGenerator::BQNode * TileMapGenerator::findTile(Vector2i tileCoords) {
-    for (BQNode * temp = head; temp != nullptr; temp = temp->next) {
-        if (temp->bucket.containsTile(tileCoords)) {
-            return temp;
+int TileMapGenerator::findTile(Vector2i tileCoords) {
+    for (int i = 0; i < buckets.size(); i++) {
+        if (buckets[i].containsTile(tileCoords)) {
+            return i;
         }
     }
-    return nullptr;
+    return -1;
 }
 
 Dictionary TileMapGenerator::parseRules(TileMapLayer * sample, int size) {
