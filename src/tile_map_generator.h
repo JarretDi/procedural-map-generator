@@ -52,12 +52,12 @@ class TileMapGenerator : public TileMapLayer {
         int mapDimensions;
 
         // updates neighbouring tiles within radius of center based on tile rules
-        void propagate(const Vector2i & center, const Vector2i & type);
+        void propagate(const Vector2i & center, int typeIdx);
 
         // finds all types that don't work with given type
         // removes those types from given tile
         // moves the tile to the right bucket based on new possibilities
-        void updateTile(const Vector2i & tileCoords, int tileType);
+        void updateTile(const Vector2i & tileCoords, const bitset<32> & rules);
 
         int findTile(Vector2i tileCoords);
     
@@ -80,7 +80,7 @@ class TileMapGenerator : public TileMapLayer {
         // picks a random tileType among its possible types
         // adds string to corresponding location on map
         // if given a coordinate, collapses that one instead of doing it randomly
-        void collapseTile(const Vector2i & givenCoords, int givenType);
+        void collapseTile(const Vector2i & coords, int typeIdx);
 
         void collapseRandomTile();
 

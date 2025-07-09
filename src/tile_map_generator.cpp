@@ -152,32 +152,29 @@ void TileMapGenerator::collapseRandomTile() {
     propagate(coords, typeIdx);
 }
 
-void TileMapGenerator::propagate(const Vector2i & center, const Vector2i & type) {
-    // TODO
-    // for (int x = center.x - radius; x <= center.x + radius; x++) {
-    //     for (int y = center.y - radius; y <= center.y + radius; y++) {
-    //         Vector2i neighbour = Vector2i(x, y);
-    //         if (center != neighbour) {
-    //             updateTile(neighbour, type);
-    //         }
-    //     }
-    // }
+void TileMapGenerator::propagate(const Vector2i & center, int typeIdx) {
+    Vector2i top = center + Vector2i(0, -1);
+    updateTile(top, typeRules[typeIdx][Direction::UP]);
+
+    Vector2i right = center + Vector2i(1, 0);
+    updateTile(right, typeRules[typeIdx][Direction::RIGHT]);
+
+    Vector2i down = center + Vector2i(0, 1);
+    updateTile(down, typeRules[typeIdx][Direction::DOWN]);
+
+    Vector2i left = center + Vector2i(-1, 0);
+    updateTile(left, typeRules[typeIdx][Direction::LEFT]);
 }
 
-void TileMapGenerator::updateTile(const Vector2i & tileCoords, const Vector2i & tileType) {
-    BQNode * tileLoc = findTile(tileCoords);
+void TileMapGenerator::updateTile(const Vector2i & tileCoords, const bitset<32> & rules) {
+    int tileLoc = findTile(tileCoords);
 
-    if (tileLoc != nullptr) {
-        Tile tile = tileLoc->bucket.removeTile(tileCoords);
-        tile.removeTypesNotIn(typeRules[tileType]);
+    if (tileLoc != -1) {
+        Tile tile = buckets[tileLoc].removeTile(tileCoords);
+        tile.removeTypesNotIn(rules);
         int priority = tile.getPriority();
 
-        // find and insert into the right bucket
-        BQNode * temp2 = head;
-        for (int i = 0; i < priority - 1; i++) {
-            temp2 = temp2->next;
-        }
-        temp2->bucket.insert(tile);
+        buckets[priority].insert(tile);
     }
 }
 
