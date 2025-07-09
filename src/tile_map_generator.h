@@ -51,8 +51,6 @@ class TileMapGenerator : public TileMapLayer {
         int tileAtlas;
         int mapDimensions;
 
-        void createBuckets(int length);
-
         // updates neighbouring tiles within radius of center based on tile rules
         void propagate(const Vector2i & center, const Vector2i & type);
 
@@ -65,8 +63,6 @@ class TileMapGenerator : public TileMapLayer {
     
     public:
         TileMapGenerator();
-
-        ~TileMapGenerator();
 
         // takes a godot dictionary (from the engine) sets typeRules to match it in c++
         void build(Dictionary tileDict, int tileAtlas, int mapDimensions);
