@@ -1,6 +1,8 @@
 #pragma once
 
-#include <set>
+#include <bitset>
+#include <array>
+#include <vector>
 #include <unordered_map>
 
 #include "bucket.h"
@@ -16,9 +18,12 @@
 
 #include <godot_cpp/classes/tile_map_layer.hpp>
 
-using namespace godot;
-
 using std::unordered_map;
+using std::array;
+using std::bitset;
+using std::vector;
+
+using namespace godot;
 
 class TileMapGenerator : public TileMapLayer {
     GDCLASS(TileMapGenerator, TileMapLayer)
@@ -27,19 +32,21 @@ class TileMapGenerator : public TileMapLayer {
         static void _bind_methods();
 
     private:
-        struct BQNode {
-            Bucket bucket;
-            BQNode * next;
-            BQNode * prev;
-        };
-
-        BQNode * head;
-        BQNode * tail;
+        vector<Bucket> buckets;
 
         // maps a tile type to a list of valid neighbours within radius
-        unordered_map<Vector2i, std::set<Vector2i>> typeRules;
+        // accounts for direction
+        unordered_map<int, array<bitset<32>, 4>> typeRules;
 
-        std::set<Vector2i> types;
+        enum Direction {
+            UP = 0,
+            RIGHT = 1,
+            DOWN = 2,
+            LEFT = 3
+        };
+
+        // maps a bitset index to a Vector2i (tileset atlas coord)
+        unordered_map<int, Vector2i> intToType;
 
         int tileAtlas;
         int mapDimensions;
@@ -52,9 +59,9 @@ class TileMapGenerator : public TileMapLayer {
         // finds all types that don't work with given type
         // removes those types from given tile
         // moves the tile to the right bucket based on new possibilities
-        void updateTile(const Vector2i & tileCoords, const Vector2i & tileType);
+        void updateTile(const Vector2i & tileCoords, int tileType);
 
-        BQNode * findTile(Vector2i tileCoords);
+        int findTile(Vector2i tileCoords);
     
     public:
         TileMapGenerator();
@@ -77,7 +84,7 @@ class TileMapGenerator : public TileMapLayer {
         // picks a random tileType among its possible types
         // adds string to corresponding location on map
         // if given a coordinate, collapses that one instead of doing it randomly
-        void collapseTile(const Vector2i & givenCoords = Vector2i(-1, -1), const Vector2i & givenType = Vector2i(-1, -1));
+        void collapseTile(const Vector2i & givenCoords, int givenType);
 
         void collapseRandomTile();
 
