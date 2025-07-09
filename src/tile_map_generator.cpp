@@ -17,38 +17,24 @@ void TileMapGenerator::build(Dictionary tileDict, int tileAtlas, int mapDimensio
     this->tileAtlas = tileAtlas;
     this->mapDimensions = mapDimensions;
 
-    Array tiles = tileDict.keys();
+    parseDictionary(tileDict);
 
-    for (int i = 0; i < tiles.size(); i++) {
-        Vector2i tileType = tiles[i];
-        Array validTypes = tileDict[tileType];
-
-        std::set<Vector2i> valid;
-
-        for (int j = 0; j < validTypes.size(); j++) {
-            Vector2i validType = validTypes[j];
-            valid.insert(validType);
-        }
-
-        typeRules[tileType] = valid;
-    }
-
-    createBuckets(typeRules.size());
-
-    for (auto it = typeRules.begin(); it != typeRules.end(); it++) {
-        types.insert(it->first);
-    }
+    int typeNum = idxToType.size();
 
     for (int x = 0; x < mapDimensions; x++) {
         for (int y = 0; y < mapDimensions; y++) {
-            tail->bucket.insert(Tile({x,y}, types));
+            buckets[buckets.size() - 1].insert(Tile({x,y}, typeNum));
         }
     }
 }
 
+void TileMapGenerator::parseDictionary(const Dictionary & tileDict) {
+
+}
+
 void TileMapGenerator::seed(int chunks, Array types, bool inOrder) {
     if (types.size() == 0) {
-        for (Vector2i type : this->types) {
+        for (auto [idx, type] : this->idxToType) {
             types.push_back(type);
         }
     }
@@ -128,7 +114,7 @@ void TileMapGenerator::collapseTile(const Vector2i & coords, int typeIdx) {
     int loc = findTile(coords);
     buckets[loc].removeTile(coords);
 
-    set_cell(coords, tileAtlas, intToType[typeIdx]);
+    set_cell(coords, tileAtlas, idxToType[typeIdx]);
 
     propagate(coords, typeIdx);
 }
@@ -147,7 +133,7 @@ void TileMapGenerator::collapseRandomTile() {
     Vector2i coords = tile.getCoords();
     int typeIdx = tile.collapseTile();
 
-    set_cell(coords, tileAtlas, intToType[typeIdx]);
+    set_cell(coords, tileAtlas, idxToType[typeIdx]);
 
     propagate(coords, typeIdx);
 }

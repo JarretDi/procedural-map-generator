@@ -46,10 +46,18 @@ class TileMapGenerator : public TileMapLayer {
         };
 
         // maps a bitset index to a Vector2i (tileset atlas coord)
-        unordered_map<int, Vector2i> intToType;
+        unordered_map<int, Vector2i> idxToType;
 
         int tileAtlas;
         int mapDimensions;
+
+        /*
+        Given Dictionary should look something like (ABC is Vector2i):
+        var example {
+            GRASS : {UP: [GRASS], RIGHT: [GRASS], DOWN: [GRASS], LEFT: [GRASS]},
+            WATER : {UP: [WATER], RIGHT: [WATER], DOWN: [WATER], LEFT: [WATER]},
+        } */
+        void parseDictionary(const Dictionary & tileDict);
 
         // updates neighbouring tiles within radius of center based on tile rules
         void propagate(const Vector2i & center, int typeIdx);
