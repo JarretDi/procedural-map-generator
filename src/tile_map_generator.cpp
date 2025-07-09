@@ -223,3 +223,7 @@ TileMapGenerator::BQNode * TileMapGenerator::findTile(Vector2i tileCoords) {
     return nullptr;
 }
 
+Dictionary TileMapGenerator::parseRules(TileMapLayer sample, int size) {
+    
+}
+

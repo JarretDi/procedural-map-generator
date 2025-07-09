@@ -86,4 +86,8 @@ class TileMapGenerator : public TileMapLayer {
         // if a tile is surrounded by 3 different identical ones,
         // switches to that type
         void refine();
+
+        // consumes a sample map
+        // returns a dictionary that contains the rules for each tile
+        Dictionary parseRules(TileMapLayer sample, int size);
 };
