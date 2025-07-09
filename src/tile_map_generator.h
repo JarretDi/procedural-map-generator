@@ -43,7 +43,6 @@ class TileMapGenerator : public TileMapLayer {
 
         int tileAtlas;
         int mapDimensions;
-        int radius;
 
         void createBuckets(int length);
 
@@ -63,7 +62,7 @@ class TileMapGenerator : public TileMapLayer {
         ~TileMapGenerator();
 
         // takes a godot dictionary (from the engine) sets typeRules to match it in c++
-        void build(Dictionary tileDict, int tileAtlas, int mapDimensions, int radius = 1);
+        void build(Dictionary tileDict, int tileAtlas, int mapDimensions);
 
         // since the generation moves out from one area, generating a tile within a chunk helps create variety
         // generates one tile for each chunk (so there will be chunks^2 tiles placed)

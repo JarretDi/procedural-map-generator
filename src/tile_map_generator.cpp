@@ -13,10 +13,9 @@ TileMapGenerator::TileMapGenerator() {
     set_process(false);
 }
 
-void TileMapGenerator::build(Dictionary tileDict, int tileAtlas, int mapDimensions, int radius) {
+void TileMapGenerator::build(Dictionary tileDict, int tileAtlas, int mapDimensions) {
     this->tileAtlas = tileAtlas;
     this->mapDimensions = mapDimensions;
-    this->radius = radius;
 
     Array tiles = tileDict.keys();
 
@@ -188,14 +187,15 @@ void TileMapGenerator::collapseRandomTile() {
 }
 
 void TileMapGenerator::propagate(const Vector2i & center, const Vector2i & type) {
-    for (int x = center.x - radius; x <= center.x + radius; x++) {
-        for (int y = center.y - radius; y <= center.y + radius; y++) {
-            Vector2i neighbour = Vector2i(x, y);
-            if (center != neighbour) {
-                updateTile(neighbour, type);
-            }
-        }
-    }
+    // TODO
+    // for (int x = center.x - radius; x <= center.x + radius; x++) {
+    //     for (int y = center.y - radius; y <= center.y + radius; y++) {
+    //         Vector2i neighbour = Vector2i(x, y);
+    //         if (center != neighbour) {
+    //             updateTile(neighbour, type);
+    //         }
+    //     }
+    // }
 }
 
 void TileMapGenerator::updateTile(const Vector2i & tileCoords, const Vector2i & tileType) {
