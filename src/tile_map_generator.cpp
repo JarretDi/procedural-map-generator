@@ -6,6 +6,7 @@ void TileMapGenerator::_bind_methods() {
     ClassDB::bind_method(D_METHOD("has_tiles_to_collapse"), &TileMapGenerator::hasTilesToCollapse);
     ClassDB::bind_method(D_METHOD("collapse_tile"), &TileMapGenerator::collapseRandomTile);
     ClassDB::bind_method(D_METHOD("refine"), &TileMapGenerator::refine);
+    ClassDB::bind_method(D_METHOD("parse_rules", "sample", "size"), &TileMapGenerator::parseRules);
 }
 
 TileMapGenerator::TileMapGenerator() {
@@ -223,7 +224,24 @@ TileMapGenerator::BQNode * TileMapGenerator::findTile(Vector2i tileCoords) {
     return nullptr;
 }
 
-Dictionary TileMapGenerator::parseRules(TileMapLayer sample, int size) {
-    
+Dictionary TileMapGenerator::parseRules(TileMapLayer * sample, int size) {
+    Dictionary dict;
+
+    for (int x = 0; x < size; x++) {
+        for (int y = 0; y < size; y++) {
+            Vector2i type = sample->get_cell_atlas_coords({x,y});
+            Array neighbours = sample->get_surrounding_cells({x, y});
+            for (int i = 0; i < neighbours.size(); i++) {
+                Vector2i neighbourType = sample->get_cell_atlas_coords(neighbours[i]);
+                if (neighbourType != Vector2i(-1, -1)) {
+                    Array arr = dict.get(type, Array());
+                    arr.push_back(neighbourType);
+                    dict[type] = arr;
+                }
+            }
+        }
+    }
+
+    return dict;
 }
 

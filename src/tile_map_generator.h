@@ -89,5 +89,5 @@ class TileMapGenerator : public TileMapLayer {
 
         // consumes a sample map
         // returns a dictionary that contains the rules for each tile
-        Dictionary parseRules(TileMapLayer sample, int size);
+        Dictionary parseRules(TileMapLayer * sample, int size);
 };
