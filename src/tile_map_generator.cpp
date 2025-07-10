@@ -1,7 +1,7 @@
 #include "tile_map_generator.h"
 
 void TileMapGenerator::_bind_methods() {
-    ClassDB::bind_method(D_METHOD("build", "tileDict", "tileAtlas", "mapDimensions", "radius"), &TileMapGenerator::build);
+    ClassDB::bind_method(D_METHOD("build", "tileDict", "tileAtlas", "mapDimensions"), &TileMapGenerator::build);
     ClassDB::bind_method(D_METHOD("seed", "chunks", "types", "in_order"), &TileMapGenerator::seed);
     ClassDB::bind_method(D_METHOD("has_tiles_to_collapse"), &TileMapGenerator::hasTilesToCollapse);
     ClassDB::bind_method(D_METHOD("collapse_tile"), &TileMapGenerator::collapseRandomTile);
@@ -46,7 +46,7 @@ void TileMapGenerator::parseDictionary(const Dictionary & tileDict) {
     // Then, go through a second pass and set bitsets for each type and direction
     for (int i = 0; i < typeAmount; i++) {
         TypedArray<Array> tileType = tileDict[tileTypes[i]];
-        for (int j = 0; j < 4; j++) {
+        for (int j = Direction::UP; j <= Direction::LEFT; j++) {
             TypedArray<Vector2i> lateralRules = tileType[j];
             for (int k = 0; k < lateralRules.size(); k++) {
                 Vector2i rule = lateralRules[k];
@@ -204,18 +204,35 @@ Dictionary TileMapGenerator::parseRules(TileMapLayer * sample, int size) {
     for (int x = 0; x < size; x++) {
         for (int y = 0; y < size; y++) {
             Vector2i type = sample->get_cell_atlas_coords({x,y});
-            Array neighbours = sample->get_surrounding_cells({x, y});
-            for (int i = 0; i < neighbours.size(); i++) {
-                Vector2i neighbourType = sample->get_cell_atlas_coords(neighbours[i]);
-                if (neighbourType != Vector2i(-1, -1)) {
-                    Array arr = dict.get(type, Array());
-                    arr.push_back(neighbourType);
-                    dict[type] = arr;
-                }
+            
+            array<Vector2i, 4> neighbourTypes = {
+                sample->get_cell_atlas_coords({x, y - 1}),
+                sample->get_cell_atlas_coords({x + 1, y}),
+                sample->get_cell_atlas_coords({x, y + 1}),
+                sample->get_cell_atlas_coords({x - 1, y})
+            };
+
+            Array typeEntry;
+
+            if (!dict.has(type)) {
+                typeEntry.resize(4);
+            } else {
+                typeEntry = dict[type];
             }
+
+            for (int i = Direction::UP; i <= Direction::LEFT; i++) {
+                Array latType = typeEntry[i];
+                Vector2i neighbourType = neighbourTypes[i];
+
+                if (neighbourType != Vector2i(-1, -1) && !latType.has(neighbourType)) {
+                    latType.push_back(neighbourType);
+                }
+
+                typeEntry[i] = latType;
+            }
+            dict[type] = typeEntry;
         }
     }
 
     return dict;
 }
-
