@@ -29,12 +29,37 @@ void TileMapGenerator::build(Dictionary tileDict, int tileAtlas, int mapDimensio
 }
 
 void TileMapGenerator::parseDictionary(const Dictionary & tileDict) {
+    unordered_map<Vector2i, int> tempMap;
+    TypedArray<Vector2i> tileTypes = tileDict.keys();
+    int typeAmount = tileTypes.size();
 
+    typeRules.resize(typeAmount);
+    idxToType.resize(typeAmount);
+
+    // First, assign each type to a unique index
+    for (int i = 0; i < typeAmount; i++) {
+        Vector2i type = tileTypes[i];
+        idxToType[i] = type;
+        tempMap[type] = i;
+    }
+
+    // Then, go through a second pass and set bitsets for each type and direction
+    for (int i = 0; i < typeAmount; i++) {
+        TypedArray<Array> tileType = tileDict[tileTypes[i]];
+        for (int j = 0; j < 4; j++) {
+            TypedArray<Vector2i> lateralRules = tileType[j];
+            for (int k = 0; k < lateralRules.size(); k++) {
+                Vector2i rule = lateralRules[k];
+                int index = tempMap.at(rule);
+                typeRules[i][j].set(index);
+            }
+        }
+    }
 }
 
 void TileMapGenerator::seed(int chunks, Array types, bool inOrder) {
     if (types.size() == 0) {
-        for (auto [idx, type] : this->idxToType) {
+        for (Vector2i type : this->idxToType) {
             types.push_back(type);
         }
     }

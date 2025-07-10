@@ -10,11 +10,11 @@
 #include "random_generator.hpp"
 
 #include <godot_cpp/classes/object.hpp>
-#include <godot_cpp/classes/os.hpp>
 #include <godot_cpp/core/class_db.hpp>
 
 #include <godot_cpp/variant/dictionary.hpp>
 #include <godot_cpp/variant/array.hpp>
+#include <godot_cpp/variant/typed_array.hpp>
 
 #include <godot_cpp/classes/tile_map_layer.hpp>
 
@@ -36,7 +36,7 @@ class TileMapGenerator : public TileMapLayer {
 
         // maps a tile type to a list of valid neighbours within radius
         // accounts for direction
-        unordered_map<int, array<bitset<32>, 4>> typeRules;
+        vector<array<bitset<32>, 4>> typeRules;
 
         enum Direction {
             UP = 0,
@@ -46,7 +46,7 @@ class TileMapGenerator : public TileMapLayer {
         };
 
         // maps a bitset index to a Vector2i (tileset atlas coord)
-        unordered_map<int, Vector2i> idxToType;
+        vector<Vector2i> idxToType;
 
         int tileAtlas;
         int mapDimensions;
@@ -54,9 +54,9 @@ class TileMapGenerator : public TileMapLayer {
         /*
         Given Dictionary should look something like (ABC is Vector2i):
         var example {
-            GRASS : {UP: [GRASS], RIGHT: [GRASS], DOWN: [GRASS], LEFT: [GRASS]},
-            WATER : {UP: [WATER], RIGHT: [WATER], DOWN: [WATER], LEFT: [WATER]},
-        } */
+            GRASS : [[GRASS, WATER], [GRASS], [GRASS], [GRASS]],
+            WATER : [[GRASS], [WATER], [WATER, GRASS], [WATER]],
+        } (where index 0, 1, 2, 3 is up, right, down, left) */
         void parseDictionary(const Dictionary & tileDict);
 
         // updates neighbouring tiles within radius of center based on tile rules
