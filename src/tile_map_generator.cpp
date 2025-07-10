@@ -20,6 +20,7 @@ void TileMapGenerator::build(Dictionary tileDict, int tileAtlas, int mapDimensio
     parseDictionary(tileDict);
 
     int typeNum = idxToType.size();
+    buckets.resize(typeNum);
 
     for (int x = 0; x < mapDimensions; x++) {
         for (int y = 0; y < mapDimensions; y++) {
