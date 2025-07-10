@@ -129,10 +129,10 @@ void TileMapGenerator::refine() {
 bool TileMapGenerator::hasTilesToCollapse() {
     for (int i = 0; i < buckets.size(); i++) {
         if (!buckets[i].isEmpty()) {
-            return false;
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
 void TileMapGenerator::collapseTile(const Vector2i & coords, int typeIdx) {
@@ -178,6 +178,7 @@ void TileMapGenerator::propagate(const Vector2i & center, int typeIdx) {
 }
 
 void TileMapGenerator::updateTile(const Vector2i & tileCoords, const bitset<32> & rules) {
+    if (tileCoords.x < 0 || tileCoords.y < 0 || tileCoords.x >= mapDimensions || tileCoords.y >= mapDimensions) return;
     int tileLoc = findTile(tileCoords);
 
     if (tileLoc != -1) {
