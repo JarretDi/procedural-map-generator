@@ -1,9 +1,11 @@
 #pragma once
 
-#include <bitset>
+
 #include <array>
-#include <vector>
+#include <bitset>
+#include <queue>
 #include <unordered_map>
+#include <vector>
 
 #include "bucket.h"
 #include "vector2i_hash.hpp"
@@ -19,9 +21,10 @@
 
 #include <godot_cpp/classes/tile_map_layer.hpp>
 
-using std::unordered_map;
 using std::array;
 using std::bitset;
+using std::queue;
+using std::unordered_map;
 using std::vector;
 
 using namespace godot;
@@ -61,7 +64,7 @@ class TileMapGenerator : public TileMapLayer {
         void parseDictionary(const Dictionary & tileDict);
 
         // updates neighbouring tiles within radius of center based on tile rules
-        void propagate(const Vector2i & center, int typeIdx);
+        void propagate(const Vector2i & center, bitset<TILE_TYPE_COUNT> type);
 
         // finds all types that don't work with given type
         // removes those types from given tile
