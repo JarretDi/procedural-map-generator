@@ -65,6 +65,7 @@
         "xutility": "cpp",
         "map": "cpp",
         "random": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "bitset": "cpp"
     }
 }

@@ -4,7 +4,6 @@ extends Node2D
 @onready var gen_layer: TileMapGenerator = $GenLayer
 
 @export var MAP_SIZE : int;
-@export var RADIUS : int;
 
 const ATLAS_ID = 0;
 
@@ -27,11 +26,11 @@ const tileRules = {
 func _ready() -> void:
 	set_process(false);
 	
-	var rules = gen_layer.parse_rules(base_layer, 6)
+	var rules = gen_layer.parse_rules(base_layer, 9)
 	
 	print(rules)
 	
-	gen_layer.build(rules, ATLAS_ID, MAP_SIZE, RADIUS)	
+	gen_layer.build(rules, ATLAS_ID, MAP_SIZE)	
 	#gen_layer.seed(4, [], false)
 	set_process(true);
 
@@ -39,8 +38,5 @@ func _process(delta: float) -> void:
 	if (gen_layer.has_tiles_to_collapse()):
 		gen_layer.collapse_tile()
 		gen_layer.collapse_tile()
-		gen_layer.collapse_tile()
-		gen_layer.collapse_tile()
 	else :
-		gen_layer.refine();
 		set_process(false);
