@@ -33,6 +33,10 @@ Tile Bucket::removeTile(const Vector2i & coordsToRemove) {
     return ret;
 }
 
+const Tile & Bucket::getTile(const Vector2i & coords) const {
+    return tiles[tileToIndex.at(coords)];
+}
+
 bool Bucket::containsTile(const Vector2i & tileCoords) const {
     return tileToIndex.find(tileCoords) != tileToIndex.end();
 }
