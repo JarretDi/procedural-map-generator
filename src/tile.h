@@ -25,14 +25,16 @@ class Tile {
 
         Tile(const Vector2i & coords, int typeCount);
 
-        int getPriority() const;
-
         // returns true if something changed
         bool removeTypesNotIn(const bitset<TILE_TYPE_COUNT> & types);
-
-        Vector2i getCoords() const;
 
         // picks a random tileType among its options in given direction
         // then returns the index of the bit
         int collapseTile();
+
+        int getPriority() const;
+        
+        Vector2i getCoords() const;
+
+        bitset<TILE_TYPE_COUNT> getPossibleTiles() const;
 };

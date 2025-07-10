@@ -6,18 +6,10 @@ Tile::Tile(const Vector2i & coords, int typeCount) : coords(coords) {
     }
 }
 
-int Tile::getPriority() const {
-    return possibleTiles.count();
-}
-
 bool Tile::removeTypesNotIn(const bitset<TILE_TYPE_COUNT> & types) {
     bitset<TILE_TYPE_COUNT> old = possibleTiles;
     possibleTiles &= types;
     return old != possibleTiles;
-}
-
-Vector2i Tile::getCoords() const {
-    return coords;
 }
 
 int Tile::collapseTile(){
@@ -39,4 +31,16 @@ int Tile::collapseTile(){
         }
     }
     return -1;
+}
+
+int Tile::getPriority() const {
+    return possibleTiles.count();
+}
+
+Vector2i Tile::getCoords() const {
+    return coords;
+}
+
+bitset<TILE_TYPE_COUNT> Tile::getPossibleTiles() const {
+    return possibleTiles;
 }
