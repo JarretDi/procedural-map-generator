@@ -178,17 +178,18 @@ void TileMapGenerator::propagate(const Vector2i & center, int typeIdx) {
     updateTile(left, typeRules[typeIdx][Direction::LEFT]);
 }
 
-void TileMapGenerator::updateTile(const Vector2i & tileCoords, const bitset<TILE_TYPE_COUNT> & rules) {
-    if (tileCoords.x < 0 || tileCoords.y < 0 || tileCoords.x >= mapDimensions || tileCoords.y >= mapDimensions) return;
+bool TileMapGenerator::updateTile(const Vector2i & tileCoords, const bitset<TILE_TYPE_COUNT> & rules) {
+    if (tileCoords.x < 0 || tileCoords.y < 0 || tileCoords.x >= mapDimensions || tileCoords.y >= mapDimensions) return false;
     int tileLoc = findTile(tileCoords);
 
-    if (tileLoc != -1) {
-        Tile tile = buckets[tileLoc].removeTile(tileCoords);
-        tile.removeTypesNotIn(rules);
-        int priority = tile.getPriority();
+    if (tileLoc == -1) return false;
+    
+    Tile tile = buckets[tileLoc].removeTile(tileCoords);
+    bool changed = tile.removeTypesNotIn(rules);
+    int priority = tile.getPriority();
 
-        buckets[priority].insert(tile);
-    }
+    buckets[priority].insert(tile);
+    return changed;    
 }
 
 int TileMapGenerator::findTile(Vector2i tileCoords) {

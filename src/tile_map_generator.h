@@ -66,7 +66,8 @@ class TileMapGenerator : public TileMapLayer {
         // finds all types that don't work with given type
         // removes those types from given tile
         // moves the tile to the right bucket based on new possibilities
-        void updateTile(const Vector2i & tileCoords, const bitset<TILE_TYPE_COUNT> & rules);
+        // returns whether its tiles' possibilities changed
+        bool updateTile(const Vector2i & tileCoords, const bitset<TILE_TYPE_COUNT> & rules);
 
         int findTile(Vector2i tileCoords);
     
