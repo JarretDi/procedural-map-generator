@@ -2,7 +2,9 @@
 
 #include <array>
 #include <bitset>
+
 #include "random_generator.hpp"
+#include "config.hpp"
 
 #include <godot_cpp/variant/vector2i.hpp>
 
@@ -17,7 +19,7 @@ class Tile {
 
         // represents the possible types, with each bit mapped to one type
         // 1 represents possible, 0 represents impossible
-        bitset<32> possibleTiles;
+        bitset<TILE_TYPE_COUNT> possibleTiles;
     
     public:
 
@@ -25,7 +27,7 @@ class Tile {
 
         int getPriority() const;
 
-        void removeTypesNotIn(const bitset<32> & types);
+        void removeTypesNotIn(const bitset<TILE_TYPE_COUNT> & types);
 
         Vector2i getCoords() const;
 

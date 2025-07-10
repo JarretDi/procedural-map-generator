@@ -26,7 +26,7 @@ const tileRules = {
 func _ready() -> void:
 	set_process(false);
 	
-	var rules = gen_layer.parse_rules(base_layer, 9)
+	var rules = gen_layer.parse_rules(base_layer, 13)
 	
 	print(rules)
 	
@@ -35,8 +35,5 @@ func _ready() -> void:
 	set_process(true);
 
 func _process(delta: float) -> void:
-	if (gen_layer.has_tiles_to_collapse()):
+	while (gen_layer.has_tiles_to_collapse()):
 		gen_layer.collapse_tile()
-		gen_layer.collapse_tile()
-	else :
-		set_process(false);

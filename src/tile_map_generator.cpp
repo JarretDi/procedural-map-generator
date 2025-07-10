@@ -178,7 +178,7 @@ void TileMapGenerator::propagate(const Vector2i & center, int typeIdx) {
     updateTile(left, typeRules[typeIdx][Direction::LEFT]);
 }
 
-void TileMapGenerator::updateTile(const Vector2i & tileCoords, const bitset<32> & rules) {
+void TileMapGenerator::updateTile(const Vector2i & tileCoords, const bitset<TILE_TYPE_COUNT> & rules) {
     if (tileCoords.x < 0 || tileCoords.y < 0 || tileCoords.x >= mapDimensions || tileCoords.y >= mapDimensions) return;
     int tileLoc = findTile(tileCoords);
 

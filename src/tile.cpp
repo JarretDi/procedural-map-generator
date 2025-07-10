@@ -10,7 +10,7 @@ int Tile::getPriority() const {
     return possibleTiles.count();
 }
 
-void Tile::removeTypesNotIn(const bitset<32> & types) {
+void Tile::removeTypesNotIn(const bitset<TILE_TYPE_COUNT> & types) {
     possibleTiles &= types;
 }
 

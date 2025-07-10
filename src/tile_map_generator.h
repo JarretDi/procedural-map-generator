@@ -8,6 +8,7 @@
 #include "bucket.h"
 #include "vector2i_hash.hpp"
 #include "random_generator.hpp"
+#include "config.hpp"
 
 #include <godot_cpp/classes/object.hpp>
 #include <godot_cpp/core/class_db.hpp>
@@ -36,7 +37,7 @@ class TileMapGenerator : public TileMapLayer {
 
         // maps a tile type to a list of valid neighbours within radius
         // accounts for direction
-        vector<array<bitset<32>, 4>> typeRules;
+        vector<array<bitset<TILE_TYPE_COUNT>, 4>> typeRules;
 
         enum Direction {
             UP = 0,
@@ -65,7 +66,7 @@ class TileMapGenerator : public TileMapLayer {
         // finds all types that don't work with given type
         // removes those types from given tile
         // moves the tile to the right bucket based on new possibilities
-        void updateTile(const Vector2i & tileCoords, const bitset<32> & rules);
+        void updateTile(const Vector2i & tileCoords, const bitset<TILE_TYPE_COUNT> & rules);
 
         int findTile(Vector2i tileCoords);
     
