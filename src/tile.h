@@ -27,7 +27,8 @@ class Tile {
 
         int getPriority() const;
 
-        void removeTypesNotIn(const bitset<TILE_TYPE_COUNT> & types);
+        // returns true if something changed
+        bool removeTypesNotIn(const bitset<TILE_TYPE_COUNT> & types);
 
         Vector2i getCoords() const;
 

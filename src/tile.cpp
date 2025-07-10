@@ -10,8 +10,10 @@ int Tile::getPriority() const {
     return possibleTiles.count();
 }
 
-void Tile::removeTypesNotIn(const bitset<TILE_TYPE_COUNT> & types) {
+bool Tile::removeTypesNotIn(const bitset<TILE_TYPE_COUNT> & types) {
+    bitset<TILE_TYPE_COUNT> old = possibleTiles;
     possibleTiles &= types;
+    return old != possibleTiles;
 }
 
 Vector2i Tile::getCoords() const {
