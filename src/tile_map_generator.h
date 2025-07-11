@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <array>
 #include <bitset>
 #include <queue>
@@ -64,7 +63,7 @@ class TileMapGenerator : public TileMapLayer {
         void parseDictionary(const Dictionary & tileDict);
 
         // updates neighbouring tiles within radius of center based on tile rules
-        void propagate(const Vector2i & center, bitset<TILE_TYPE_COUNT> type);
+        void propagate(Vector2i collapsedCoords, int typeIdx);
 
         // finds all types that don't work with given type
         // removes those types from given tile
@@ -84,7 +83,8 @@ class TileMapGenerator : public TileMapLayer {
         // generates one tile for each chunk (so there will be chunks^2 tiles placed)
         // takes in an optional array as to what should be seeded,
         // inOrder is whether it should be chosen randomly from types, or in the order given (wraps)
-        void seed(int chunks, Array types = Array(), bool inOrder = false);
+        // void seed(int chunks, Array types = Array(), bool inOrder = false);
+        // SEED IS DEPRECATED AND DOESN'T MAKE SENSE WITH CURRENT BRANCH LOGIC
 
         // returns true if there are no more tiles in a node after collapsed
         bool hasTilesToCollapse();
@@ -93,7 +93,7 @@ class TileMapGenerator : public TileMapLayer {
         // picks a random tileType among its possible types
         // adds string to corresponding location on map
         // if given a coordinate, collapses that one instead of doing it randomly
-        void collapseTile(const Vector2i & coords, int typeIdx);
+        // void collapseTile(const Vector2i & coords, int typeIdx);
 
         void collapseRandomTile();
 
