@@ -2,7 +2,7 @@
 
 void TileMapGenerator::_bind_methods() {
     ClassDB::bind_method(D_METHOD("build", "tileDict", "tileAtlas", "mapDimensions"), &TileMapGenerator::build);
-    ClassDB::bind_method(D_METHOD("seed", "chunks", "types", "in_order"), &TileMapGenerator::seed);
+    //ClassDB::bind_method(D_METHOD("seed", "chunks", "types", "in_order"), &TileMapGenerator::seed);
     ClassDB::bind_method(D_METHOD("has_tiles_to_collapse"), &TileMapGenerator::hasTilesToCollapse);
     ClassDB::bind_method(D_METHOD("collapse_tile"), &TileMapGenerator::collapseRandomTile);
     ClassDB::bind_method(D_METHOD("refine"), &TileMapGenerator::refine);
@@ -58,36 +58,36 @@ void TileMapGenerator::parseDictionary(const Dictionary & tileDict) {
     }
 }
 
-void TileMapGenerator::seed(int chunks, Array types, bool inOrder) {
-    if (types.size() == 0) {
-        for (Vector2i type : this->idxToType) {
-            types.push_back(type);
-        }
-    }
+// void TileMapGenerator::seed(int chunks, Array types, bool inOrder) {
+//     if (types.size() == 0) {
+//         for (Vector2i type : this->idxToType) {
+//             types.push_back(type);
+//         }
+//     }
 
-    int chunkLength = mapDimensions / chunks;
-    int index = 0;
+//     int chunkLength = mapDimensions / chunks;
+//     int index = 0;
 
-    for (int x = 0; x < chunks; x++) {
-        for (int y = 0; y < chunks; y++) {
-            int chunkx = RandomGenerator::getInt(
-                x * chunkLength,
-                std::min((x + 1) * chunkLength - 1, mapDimensions - 1));
-            int chunky = RandomGenerator::getInt(
-                y * chunkLength,
-                std::min((y + 1) * chunkLength - 1, mapDimensions - 1));
+//     for (int x = 0; x < chunks; x++) {
+//         for (int y = 0; y < chunks; y++) {
+//             int chunkx = RandomGenerator::getInt(
+//                 x * chunkLength,
+//                 std::min((x + 1) * chunkLength - 1, mapDimensions - 1));
+//             int chunky = RandomGenerator::getInt(
+//                 y * chunkLength,
+//                 std::min((y + 1) * chunkLength - 1, mapDimensions - 1));
             
-            Vector2i tile(chunkx, chunky);
+//             Vector2i tile(chunkx, chunky);
 
-            if (inOrder) {
-                collapseTile(tile, types[index % types.size()]);
-                index++;
-            } else {
-                collapseTile(tile, types[RandomGenerator::getInt(0, types.size() - 1)]);
-            }
-        }
-    }
-}
+//             if (inOrder) {
+//                 collapseTile(tile, types[index % types.size()]);
+//                 index++;
+//             } else {
+//                 collapseTile(tile, types[RandomGenerator::getInt(0, types.size() - 1)]);
+//             }
+//         }
+//     }
+// }
 
 void TileMapGenerator::refine() {
     for (int x = 0; x < mapDimensions; x++) {
@@ -108,11 +108,11 @@ void TileMapGenerator::refine() {
                 count[type]++;
             }
 
-            Vector2i dominantType = Vector2i(-1, -1);
+            Vector2i dominantType = NULLVEC;
             int maxSoFar = 0;
 
             for (auto [type, freq] : count) {
-                if (freq > maxSoFar && type != Vector2i(-1, -1)) {
+                if (freq > maxSoFar && type != NULLVEC) {
                     dominantType = type;
                     maxSoFar = freq; 
                 }
@@ -136,14 +136,14 @@ bool TileMapGenerator::hasTilesToCollapse() {
     return false;
 }
 
-void TileMapGenerator::collapseTile(const Vector2i & coords, int typeIdx) {
-    int loc = findTile(coords);
-    buckets[loc].removeTile(coords);
+// void TileMapGenerator::collapseTile(const Vector2i & coords, int typeIdx) {
+//     int loc = findTile(coords);
+//     buckets[loc].removeTile(coords);
 
-    set_cell(coords, tileAtlas, idxToType[typeIdx]);
+//     set_cell(coords, tileAtlas, idxToType[typeIdx]);
 
-    propagate(coords, typeIdx);
-}
+//     propagate(coords, typeIdx);
+// }
 
 void TileMapGenerator::collapseRandomTile() {
     int i = 0;
@@ -160,14 +160,56 @@ void TileMapGenerator::collapseRandomTile() {
     int typeIdx = tile.collapseTile();
 
     set_cell(coords, tileAtlas, idxToType[typeIdx]);
-    bitset<TILE_TYPE_COUNT> toPropogate;
-    toPropogate.set(typeIdx);
 
-    propagate(coords, toPropogate);
+    propagate(coords, typeIdx);
 }
 
-void TileMapGenerator::propagate(const Vector2i & center, bitset<TILE_TYPE_COUNT> type) {
-    
+void TileMapGenerator::propagate(Vector2i collapsedCoords, int typeIdx) {
+    queue<Vector2i> toVisit;
+
+    // initialize the queue by pushing neighbours first
+    for (int dir = Direction::UP; dir <= Direction::LEFT; dir++) {
+        Vector2i neighbourCoords = collapsedCoords + CARDINAL_VECTORS[dir];
+
+        bitset<TILE_TYPE_COUNT> valid = typeRules[typeIdx][dir];
+
+        bool changed = updateTile(neighbourCoords, valid);
+
+        if (changed) toVisit.push(neighbourCoords);
+    }
+
+    while (!toVisit.empty()) {
+        Vector2i currentCoords = toVisit.front();
+        toVisit.pop();
+
+        int bucket = findTile(currentCoords); 
+        if (bucket == -1) {
+            continue;
+        }
+
+        Tile currentTile = buckets[bucket].getTile(currentCoords);
+
+        bitset<TILE_TYPE_COUNT> currentPossibilities = currentTile.getPossibleTiles();
+
+        for (int dir = Direction::UP; dir <= Direction::LEFT; dir++) {
+            Vector2i newTile = currentCoords + CARDINAL_VECTORS[dir];
+            bitset<TILE_TYPE_COUNT> toUpdate;
+
+            // we need to find the union of possible states in a direction
+            for (int i = 0; i < currentPossibilities.size(); i++) {
+                if (currentPossibilities[i]) {
+                    // we have landed on a possible index
+                    bitset<TILE_TYPE_COUNT> rules = typeRules[i][dir];
+                    // or because we want each possible option
+                    // for all current possible states for this tile
+                    toUpdate |= rules;
+                }
+            }
+
+            bool changed = updateTile(newTile, toUpdate);
+            if (changed) toVisit.push(newTile);
+        }
+    }
 }
 
 bool TileMapGenerator::updateTile(const Vector2i & tileCoords, const bitset<TILE_TYPE_COUNT> & rules) {
@@ -219,7 +261,7 @@ Dictionary TileMapGenerator::parseRules(TileMapLayer * sample, int size) {
                 Array latType = typeEntry[i];
                 Vector2i neighbourType = neighbourTypes[i];
 
-                if (neighbourType != Vector2i(-1, -1) && !latType.has(neighbourType)) {
+                if (neighbourType != NULLVEC && !latType.has(neighbourType)) {
                     latType.push_back(neighbourType);
                 }
 
