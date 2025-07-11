@@ -24,6 +24,8 @@ int Tile::collapseTile(){
     for (int i = 0; i < possibleTiles.size(); i++) {
         if (possibleTiles[i]) {
             if (index == 0) {
+                possibleTiles.reset();
+                possibleTiles.set(i);
                 return i;
             } else {
                 index--;
