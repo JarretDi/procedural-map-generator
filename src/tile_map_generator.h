@@ -44,6 +44,9 @@ class TileMapGenerator : public TileMapLayer {
         // accounts for direction
         vector<array<bitset<TILE_TYPE_COUNT>, 4>> typeRules;
 
+        // maps a tile type to the amount of its type found
+        vector<int> tileFreq;
+
         enum Direction {
             UP = 0,
             RIGHT = 1,
@@ -52,6 +55,7 @@ class TileMapGenerator : public TileMapLayer {
         };
 
         // maps a bitset index to a Vector2i (tileset atlas coord)
+        // only really needed when a tile is being collapsed
         vector<Vector2i> idxToType;
 
         int tileAtlas;
@@ -63,7 +67,7 @@ class TileMapGenerator : public TileMapLayer {
             GRASS : [[GRASS, WATER], [GRASS], [GRASS], [GRASS]],
             WATER : [[GRASS], [WATER], [WATER, GRASS], [WATER]],
         } (where index 0, 1, 2, 3 is up, right, down, left) */
-        void parseDictionary(const Dictionary & tileDict);
+        void parseDictionary(const Dictionary & tileDict, const Dictionary & freqMap);
 
         // updates neighbouring tiles within radius of center based on tile rules
         void propagate(Vector2i collapsedCoords, int typeIdx);
@@ -80,7 +84,7 @@ class TileMapGenerator : public TileMapLayer {
         TileMapGenerator();
 
         // takes a godot dictionary (from the engine) sets typeRules to match it in c++
-        void build(Dictionary tileDict, int tileAtlas, int mapDimensions);
+        void build(Dictionary tileDict, Dictionary freqMap, int tileAtlas, int mapDimensions);
 
         // returns true if there are no more tiles in a node after collapsed
         bool hasTilesToCollapse();

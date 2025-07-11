@@ -11,11 +11,11 @@ TileMapGenerator::TileMapGenerator() {
     set_process(false);
 }
 
-void TileMapGenerator::build(Dictionary tileDict, int tileAtlas, int mapDimensions) {
+void TileMapGenerator::build(Dictionary tileDict, Dictionary freqMap, int tileAtlas, int mapDimensions) {
     this->tileAtlas = tileAtlas;
     this->mapDimensions = mapDimensions;
 
-    parseDictionary(tileDict);
+    parseDictionary(tileDict, freqMap);
 
     int typeNum = idxToType.size();
     buckets.resize(typeNum + 1);
@@ -27,19 +27,23 @@ void TileMapGenerator::build(Dictionary tileDict, int tileAtlas, int mapDimensio
     }
 }
 
-void TileMapGenerator::parseDictionary(const Dictionary & tileDict) {
+void TileMapGenerator::parseDictionary(const Dictionary & tileDict, const Dictionary & freqMap) {
     unordered_map<Vector2i, int> tempMap;
     TypedArray<Vector2i> tileTypes = tileDict.keys();
     int typeAmount = tileTypes.size();
 
     typeRules.resize(typeAmount);
     idxToType.resize(typeAmount);
+    tileFreq.resize(typeAmount);
 
     // First, assign each type to a unique index
+    // additionally, set up the freq map
     for (int i = 0; i < typeAmount; i++) {
         Vector2i type = tileTypes[i];
         idxToType[i] = type;
         tempMap[type] = i;
+
+        tileFreq[i] = freqMap[type];
     }
 
     // Then, go through a second pass and set bitsets for each type and direction
@@ -221,7 +225,8 @@ Dictionary TileMapGenerator::parseFrequency(TileMapLayer * sample, int size) {
     for (int x = 0; x < size; x++) {
         for (int y = 0; y < size; y++) {
             Vector2i type = sample->get_cell_atlas_coords({x,y});
-
+            if (type == Vector2i(-1, -1)) continue;
+            
             if (!dict.has(type)) {
                 dict[type] = 0;
             }
