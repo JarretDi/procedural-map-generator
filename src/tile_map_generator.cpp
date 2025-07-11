@@ -5,6 +5,7 @@ void TileMapGenerator::_bind_methods() {
     ClassDB::bind_method(D_METHOD("has_tiles_to_collapse"), &TileMapGenerator::hasTilesToCollapse);
     ClassDB::bind_method(D_METHOD("collapse_tile"), &TileMapGenerator::collapseRandomTile);
     ClassDB::bind_method(D_METHOD("parse_rules", "sample", "size"), &TileMapGenerator::parseRules);
+    ClassDB::bind_method(D_METHOD("parse_frequency", "sample", "size"), &TileMapGenerator::parseFrequency);
 }
 
 TileMapGenerator::TileMapGenerator() {
@@ -226,7 +227,7 @@ Dictionary TileMapGenerator::parseFrequency(TileMapLayer * sample, int size) {
         for (int y = 0; y < size; y++) {
             Vector2i type = sample->get_cell_atlas_coords({x,y});
             if (type == Vector2i(-1, -1)) continue;
-            
+
             if (!dict.has(type)) {
                 dict[type] = 0;
             }
