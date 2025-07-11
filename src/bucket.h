@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <ctime> 
 #include <stdexcept>
+#include <iostream>
 
 #include "vector2i_hash.hpp"
 #include "random_generator.hpp"
@@ -26,7 +27,7 @@ class Bucket {
         unordered_map<Vector2i, int> tileToIndex;
 
     public:
-        void insert(const Tile & tile);
+        void insert(Tile tile);
 
         Tile removeRandom();
 

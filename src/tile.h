@@ -25,6 +25,8 @@ class Tile {
 
         Tile(const Vector2i & coords, int typeCount);
 
+        Tile(const Tile & other) = default;
+
         // returns true if something changed
         bool removeTypesNotIn(const bitset<TILE_TYPE_COUNT> & types);
 

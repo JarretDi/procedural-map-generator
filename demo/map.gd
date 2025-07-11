@@ -32,8 +32,11 @@ func _ready() -> void:
 	
 	gen_layer.build(rules, ATLAS_ID, MAP_SIZE)	
 	#gen_layer.seed(4, [], false)
-	set_process(true);
+	set_process(true)
 
 func _process(delta: float) -> void:
-	while (gen_layer.has_tiles_to_collapse()):
+	if (gen_layer.has_tiles_to_collapse()):
 		gen_layer.collapse_tile()
+		pass
+	else:
+		set_process(false)

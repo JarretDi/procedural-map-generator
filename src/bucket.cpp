@@ -1,7 +1,10 @@
 #include "bucket.h"
 
-void Bucket::insert(const Tile & tile) {
+void Bucket::insert(Tile tile) {
+    std::cerr << "Inserting tile at" << tile.getCoords().x << ", " << tile.getCoords().y << "\n";
+    std::cerr << "tiles has size: " << tiles.size() << ", and tileToIndex has size: " << tileToIndex.size() << "\n";
     tiles.push_back(tile);
+    std::cerr << "tile has been pushed in \n"; 
     tileToIndex[tile.getCoords()] = tiles.size() - 1;
 }
 

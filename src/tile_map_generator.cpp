@@ -20,7 +20,7 @@ void TileMapGenerator::build(Dictionary tileDict, int tileAtlas, int mapDimensio
     parseDictionary(tileDict);
 
     int typeNum = idxToType.size();
-    buckets.resize(typeNum);
+    buckets.resize(typeNum + 1);
 
     for (int x = 0; x < mapDimensions; x++) {
         for (int y = 0; y < mapDimensions; y++) {
@@ -160,6 +160,7 @@ void TileMapGenerator::collapseRandomTile() {
     int typeIdx = tile.collapseTile();
 
     set_cell(coords, tileAtlas, idxToType[typeIdx]);
+    std::cerr << "Set cell at (" << coords.x << ", " << coords.y << ") to "<< typeIdx << "\n";
 
     propagate(coords, typeIdx);
 }
@@ -170,8 +171,13 @@ void TileMapGenerator::propagate(Vector2i collapsedCoords, int typeIdx) {
     // initialize the queue by pushing neighbours first
     for (int dir = Direction::UP; dir <= Direction::LEFT; dir++) {
         Vector2i neighbourCoords = collapsedCoords + CARDINAL_VECTORS[dir];
+        if (neighbourCoords.x < 0 || neighbourCoords.y < 0 || neighbourCoords.x >= mapDimensions || neighbourCoords.y >= mapDimensions) {
+            continue;
+        }
 
         bitset<TILE_TYPE_COUNT> valid = typeRules[typeIdx][dir];
+
+        std::cerr << "Propogating to (" << neighbourCoords.x << ", " << neighbourCoords.y << ") with types " << valid.to_string().c_str() << "\n";
 
         bool changed = updateTile(neighbourCoords, valid);
 
@@ -187,7 +193,7 @@ void TileMapGenerator::propagate(Vector2i collapsedCoords, int typeIdx) {
             continue;
         }
 
-        Tile currentTile = buckets[bucket].getTile(currentCoords);
+        const Tile & currentTile = buckets[bucket].getTile(currentCoords);
 
         bitset<TILE_TYPE_COUNT> currentPossibilities = currentTile.getPossibleTiles();
 
@@ -219,8 +225,14 @@ bool TileMapGenerator::updateTile(const Vector2i & tileCoords, const bitset<TILE
     if (tileLoc == -1) return false;
     
     Tile tile = buckets[tileLoc].removeTile(tileCoords);
+
+    std::cerr << "Updating tile at (" << tile.getCoords().x << ", " << tile.getCoords().y << ") with types " << tile.getPossibleTiles().to_string().c_str() << "\n";
+
     bool changed = tile.removeTypesNotIn(rules);
     int priority = tile.getPriority();
+
+    std::cerr << "Tile has priority " << priority << ", and changed is " << changed << "\n";
+    std::cerr << "Tile has been updated with new type:" << tile.getPossibleTiles().to_string().c_str() << "\n";
 
     buckets[priority].insert(tile);
     return changed;    

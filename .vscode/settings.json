@@ -66,6 +66,9 @@
         "map": "cpp",
         "random": "cpp",
         "functional": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "deque": "cpp",
+        "queue": "cpp",
+        "unordered_set": "cpp"
     }
 }

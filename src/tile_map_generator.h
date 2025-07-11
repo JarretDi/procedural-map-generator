@@ -2,6 +2,7 @@
 
 #include <array>
 #include <bitset>
+#include <iostream>
 #include <queue>
 #include <unordered_map>
 #include <vector>
@@ -13,10 +14,12 @@
 
 #include <godot_cpp/classes/object.hpp>
 #include <godot_cpp/core/class_db.hpp>
+#include <godot_cpp/core/memory.hpp>
 
 #include <godot_cpp/variant/dictionary.hpp>
 #include <godot_cpp/variant/array.hpp>
 #include <godot_cpp/variant/typed_array.hpp>
+#include <godot_cpp/variant/utility_functions.hpp>
 
 #include <godot_cpp/classes/tile_map_layer.hpp>
 
@@ -105,4 +108,6 @@ class TileMapGenerator : public TileMapLayer {
         // consumes a sample map
         // returns a dictionary that contains the rules for each tile
         Dictionary parseRules(TileMapLayer * sample, int size);
+
+        void printTiles();
 };
