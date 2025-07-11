@@ -160,7 +160,7 @@ void TileMapGenerator::collapseRandomTile() {
     int typeIdx = tile.collapseTile();
 
     set_cell(coords, tileAtlas, idxToType[typeIdx]);
-    std::cerr << "Set cell at (" << coords.x << ", " << coords.y << ") to "<< typeIdx << "\n";
+    //std::cerr << "Set cell at (" << coords.x << ", " << coords.y << ") to "<< typeIdx << "\n";
 
     propagate(coords, typeIdx);
 }
@@ -177,7 +177,7 @@ void TileMapGenerator::propagate(Vector2i collapsedCoords, int typeIdx) {
 
         bitset<TILE_TYPE_COUNT> valid = typeRules[typeIdx][dir];
 
-        std::cerr << "Propogating to (" << neighbourCoords.x << ", " << neighbourCoords.y << ") with types " << valid.to_string().c_str() << "\n";
+        //std::cerr << "Propogating to (" << neighbourCoords.x << ", " << neighbourCoords.y << ") with types " << valid.to_string().c_str() << "\n";
 
         bool changed = updateTile(neighbourCoords, valid);
 
@@ -226,13 +226,13 @@ bool TileMapGenerator::updateTile(const Vector2i & tileCoords, const bitset<TILE
     
     Tile tile = buckets[tileLoc].removeTile(tileCoords);
 
-    std::cerr << "Updating tile at (" << tile.getCoords().x << ", " << tile.getCoords().y << ") with types " << tile.getPossibleTiles().to_string().c_str() << "\n";
+    //std::cerr << "Updating tile at (" << tile.getCoords().x << ", " << tile.getCoords().y << ") with types " << tile.getPossibleTiles().to_string().c_str() << "\n";
 
     bool changed = tile.removeTypesNotIn(rules);
     int priority = tile.getPriority();
 
-    std::cerr << "Tile has priority " << priority << ", and changed is " << changed << "\n";
-    std::cerr << "Tile has been updated with new type:" << tile.getPossibleTiles().to_string().c_str() << "\n";
+    //std::cerr << "Tile has priority " << priority << ", and changed is " << changed << "\n";
+    //std::cerr << "Tile has been updated with new type:" << tile.getPossibleTiles().to_string().c_str() << "\n";
 
     buckets[priority].insert(tile);
     return changed;    

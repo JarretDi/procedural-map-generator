@@ -37,6 +37,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if (gen_layer.has_tiles_to_collapse()):
 		gen_layer.collapse_tile()
+		gen_layer.collapse_tile()
+		gen_layer.collapse_tile()
+		gen_layer.collapse_tile()
 		pass
 	else:
 		set_process(false)
