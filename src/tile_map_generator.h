@@ -97,5 +97,7 @@ class TileMapGenerator : public TileMapLayer {
         // returns a dictionary that contains the rules for each tile
         Dictionary parseRules(TileMapLayer * sample, int size);
 
-        void printTiles();
+        // builds a frequency map (as a dictionary) from a sample map
+        // should be given the same sample as parseRules (above)
+        Dictionary parseFrequency(TileMapLayer * sample, int size);
 };

@@ -214,3 +214,23 @@ Dictionary TileMapGenerator::parseRules(TileMapLayer * sample, int size) {
 
     return dict;
 }
+
+Dictionary TileMapGenerator::parseFrequency(TileMapLayer * sample, int size) {
+    Dictionary dict;
+
+    for (int x = 0; x < size; x++) {
+        for (int y = 0; y < size; y++) {
+            Vector2i type = sample->get_cell_atlas_coords({x,y});
+
+            if (!dict.has(type)) {
+                dict[type] = 0;
+            }
+
+            int newVal = dict[type];
+            newVal++;
+            dict[type] = newVal;
+        }
+    }
+
+    return dict;
+}
