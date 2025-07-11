@@ -3,9 +3,11 @@
 #include <array>
 #include <godot_cpp/variant/vector2i.hpp>
 
+using namespace godot;
+
 constexpr size_t TILE_TYPE_COUNT = 64;
 
-const Vector2i NULLVEC = Vector2i(-1, -1);
+const Vector2i NULL_VEC = Vector2i(-1, -1);
 
 const std::array<Vector2i, 4> CARDINAL_VECTORS = {
     Vector2i( 0, -1),

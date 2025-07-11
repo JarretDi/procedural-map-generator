@@ -108,11 +108,11 @@ void TileMapGenerator::refine() {
                 count[type]++;
             }
 
-            Vector2i dominantType = NULLVEC;
+            Vector2i dominantType = NULL_VEC;
             int maxSoFar = 0;
 
             for (auto [type, freq] : count) {
-                if (freq > maxSoFar && type != NULLVEC) {
+                if (freq > maxSoFar && type != NULL_VEC) {
                     dominantType = type;
                     maxSoFar = freq; 
                 }
@@ -261,7 +261,7 @@ Dictionary TileMapGenerator::parseRules(TileMapLayer * sample, int size) {
                 Array latType = typeEntry[i];
                 Vector2i neighbourType = neighbourTypes[i];
 
-                if (neighbourType != NULLVEC && !latType.has(neighbourType)) {
+                if (neighbourType != NULL_VEC && !latType.has(neighbourType)) {
                     latType.push_back(neighbourType);
                 }
 

@@ -10,6 +10,7 @@
 
 #include "vector2i_hash.hpp"
 #include "random_generator.hpp"
+#include "config.hpp"
 
 using std::vector;
 using std::unordered_map;
