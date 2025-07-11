@@ -2,10 +2,8 @@
 
 void TileMapGenerator::_bind_methods() {
     ClassDB::bind_method(D_METHOD("build", "tileDict", "tileAtlas", "mapDimensions"), &TileMapGenerator::build);
-    //ClassDB::bind_method(D_METHOD("seed", "chunks", "types", "in_order"), &TileMapGenerator::seed);
     ClassDB::bind_method(D_METHOD("has_tiles_to_collapse"), &TileMapGenerator::hasTilesToCollapse);
     ClassDB::bind_method(D_METHOD("collapse_tile"), &TileMapGenerator::collapseRandomTile);
-    ClassDB::bind_method(D_METHOD("refine"), &TileMapGenerator::refine);
     ClassDB::bind_method(D_METHOD("parse_rules", "sample", "size"), &TileMapGenerator::parseRules);
 }
 
@@ -58,75 +56,6 @@ void TileMapGenerator::parseDictionary(const Dictionary & tileDict) {
     }
 }
 
-// void TileMapGenerator::seed(int chunks, Array types, bool inOrder) {
-//     if (types.size() == 0) {
-//         for (Vector2i type : this->idxToType) {
-//             types.push_back(type);
-//         }
-//     }
-
-//     int chunkLength = mapDimensions / chunks;
-//     int index = 0;
-
-//     for (int x = 0; x < chunks; x++) {
-//         for (int y = 0; y < chunks; y++) {
-//             int chunkx = RandomGenerator::getInt(
-//                 x * chunkLength,
-//                 std::min((x + 1) * chunkLength - 1, mapDimensions - 1));
-//             int chunky = RandomGenerator::getInt(
-//                 y * chunkLength,
-//                 std::min((y + 1) * chunkLength - 1, mapDimensions - 1));
-            
-//             Vector2i tile(chunkx, chunky);
-
-//             if (inOrder) {
-//                 collapseTile(tile, types[index % types.size()]);
-//                 index++;
-//             } else {
-//                 collapseTile(tile, types[RandomGenerator::getInt(0, types.size() - 1)]);
-//             }
-//         }
-//     }
-// }
-
-void TileMapGenerator::refine() {
-    for (int x = 0; x < mapDimensions; x++) {
-        for (int y = 0; y < mapDimensions; y++) {
-            Vector2i currentType = get_cell_atlas_coords({x, y});
-
-            Vector2i upType = get_cell_atlas_coords({x, y-1});
-            Vector2i downType = get_cell_atlas_coords({x, y+1});
-            Vector2i leftType = get_cell_atlas_coords({x-1, y});
-            Vector2i rightType = get_cell_atlas_coords({x+1, y});
-
-            Vector2i types[4] = {upType, downType, leftType, rightType};
-
-            unordered_map<Vector2i, int> count;
-
-            for (Vector2i type : types) {
-                if (count.find(type) == count.end()) count[type] = 0;
-                count[type]++;
-            }
-
-            Vector2i dominantType = NULL_VEC;
-            int maxSoFar = 0;
-
-            for (auto [type, freq] : count) {
-                if (freq > maxSoFar && type != NULL_VEC) {
-                    dominantType = type;
-                    maxSoFar = freq; 
-                }
-            }
-
-            // if has only one neighbor of same type, dies
-            // OR if surrounded by 3 or more of another type, switches
-            if (count[currentType] <= 1 || maxSoFar >= 3) {
-                set_cell({x,y}, tileAtlas, dominantType);
-            }
-        }
-    }
-}
-
 bool TileMapGenerator::hasTilesToCollapse() {
     for (int i = 0; i < buckets.size(); i++) {
         if (!buckets[i].isEmpty()) {
@@ -136,14 +65,14 @@ bool TileMapGenerator::hasTilesToCollapse() {
     return false;
 }
 
-// void TileMapGenerator::collapseTile(const Vector2i & coords, int typeIdx) {
-//     int loc = findTile(coords);
-//     buckets[loc].removeTile(coords);
+void TileMapGenerator::collapseTile(const Vector2i & coords, int typeIdx) {
+    int loc = findTile(coords);
+    buckets[loc].removeTile(coords);
 
-//     set_cell(coords, tileAtlas, idxToType[typeIdx]);
+    set_cell(coords, tileAtlas, idxToType[typeIdx]);
 
-//     propagate(coords, typeIdx);
-// }
+    propagate(coords, typeIdx);
+}
 
 void TileMapGenerator::collapseRandomTile() {
     int i = 0;

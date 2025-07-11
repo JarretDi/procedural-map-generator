@@ -82,28 +82,16 @@ class TileMapGenerator : public TileMapLayer {
         // takes a godot dictionary (from the engine) sets typeRules to match it in c++
         void build(Dictionary tileDict, int tileAtlas, int mapDimensions);
 
-        // since the generation moves out from one area, generating a tile within a chunk helps create variety
-        // generates one tile for each chunk (so there will be chunks^2 tiles placed)
-        // takes in an optional array as to what should be seeded,
-        // inOrder is whether it should be chosen randomly from types, or in the order given (wraps)
-        // void seed(int chunks, Array types = Array(), bool inOrder = false);
-        // SEED IS DEPRECATED AND DOESN'T MAKE SENSE WITH CURRENT BRANCH LOGIC
-
         // returns true if there are no more tiles in a node after collapsed
         bool hasTilesToCollapse();
 
         // picks a tile among those with the highest priority > 1
         // picks a random tileType among its possible types
-        // adds string to corresponding location on map
         // if given a coordinate, collapses that one instead of doing it randomly
-        // void collapseTile(const Vector2i & coords, int typeIdx);
+        // then, adds it to TileMapLayer and propogates the changes
+        void collapseTile(const Vector2i & coords, int typeIdx);
 
         void collapseRandomTile();
-
-        // goes through all the tiles
-        // if a tile is surrounded by 3 different identical ones,
-        // switches to that type
-        void refine();
 
         // consumes a sample map
         // returns a dictionary that contains the rules for each tile
