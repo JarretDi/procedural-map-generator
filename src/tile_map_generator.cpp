@@ -91,7 +91,7 @@ void TileMapGenerator::collapseRandomTile() {
 
     Tile tile = buckets[i].removeRandom();
     Vector2i coords = tile.getCoords();
-    int typeIdx = tile.collapseTile();
+    int typeIdx = tile.collapseTile(tileFreq);
 
     set_cell(coords, tileAtlas, idxToType[typeIdx]);
     //std::cerr << "Set cell at (" << coords.x << ", " << coords.y << ") to "<< typeIdx << "\n";

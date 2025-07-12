@@ -12,27 +12,24 @@ bool Tile::removeTypesNotIn(const bitset<TILE_TYPE_COUNT> & types) {
     return old != possibleTiles;
 }
 
-int Tile::collapseTile(){
-    int count = possibleTiles.count();
-
-    if (count == 0) {
+int Tile::collapseTile(const vector<int> & freqMap) {
+    if (possibleTiles.count() == 0) {
         return -1;
     }
 
-    int index = RandomGenerator::getInt(0, count - 1);
-
+    vector<int> weights;
+    weights.resize(possibleTiles.size());
     for (int i = 0; i < possibleTiles.size(); i++) {
         if (possibleTiles[i]) {
-            if (index == 0) {
-                possibleTiles.reset();
-                possibleTiles.set(i);
-                return i;
-            } else {
-                index--;
-            }
+            weights[i] = freqMap[i];
         }
     }
-    return -1;
+
+    int idx = RandomGenerator::getIntDistribution(weights);
+    possibleTiles.reset();
+    possibleTiles.set(idx);
+
+    return idx;
 }
 
 int Tile::getPriority() const {

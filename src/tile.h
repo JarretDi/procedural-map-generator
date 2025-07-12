@@ -2,14 +2,16 @@
 
 #include <array>
 #include <bitset>
+#include <vector>
 
 #include "random_generator.hpp"
 #include "config.hpp"
 
 #include <godot_cpp/variant/vector2i.hpp>
 
-using std::bitset;
 using std::array;
+using std::bitset;
+using std::vector;
 using namespace godot;
 
 class Tile {
@@ -32,7 +34,7 @@ class Tile {
 
         // picks a random tileType among its options in given direction
         // then returns the index of the bit
-        int collapseTile();
+        int collapseTile(const vector<int> & freqMap);
 
         int getPriority() const;
         

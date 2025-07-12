@@ -12,7 +12,7 @@ class RandomGenerator {
             return dist(gen);
         }
 
-        static int getIntDistribution(std::vector<int> weights) {
+        static int getIntDistribution(const std::vector<int> & weights) {
             std::discrete_distribution<int> dist(weights.begin(), weights.end());
             return dist(gen);
         }
