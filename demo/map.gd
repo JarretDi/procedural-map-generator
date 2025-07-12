@@ -26,11 +26,13 @@ const tileRules = {
 func _ready() -> void:
 	set_process(false);
 	
-	var rules = gen_layer.parse_rules(base_layer, 13)
+	var rule = gen_layer.parse_rules(base_layer, 12)
+	var freq = gen_layer.parse_frequency(base_layer, 12)
 	
-	print(rules)
+	print(rule)
+	print(freq)
 	
-	gen_layer.build(rules, ATLAS_ID, MAP_SIZE)	
+	gen_layer.build(rule, freq, ATLAS_ID, MAP_SIZE)	
 	#gen_layer.seed(4, [], false)
 	set_process(true)
 
