@@ -5,15 +5,23 @@ A procedural tile map generator with Godot 4 to explore the Wave Function Collap
 ## Features
 
 - Constraint-based tile placement via neighbor rules
-- Radius-based propagation
+- Considers direction, which allows multi-tiled objects to fit nicely with each other
+- Uses only a sample tilemap (using Godot editor) as input, you don't need to manually specify which tiles go with each other
+- Probability based generation - the more of one tile you give in the sample, the more likelier it shows up in the generated map
+- BFS based propogation, which greatly diminishes contradiction chance for samples that make sense
 - Visual step-by-step generation via `_process`
 - Written in C++ for performance, using GDExtension
-- Supports custom tiles and rules via Godot's `Dictionary` input
+
+## Example Usage
+
+![Sample](data/Sample.png)
+
+![Generated Result](data/Result.png)
 
 ## Dependencies
 
 - Godot Engine 4.4+
-- C++ compiler (MSVC, GCC, or Clang)
+- C++ compiler (MSVC, GCC, Clang, etc.)
 - [godot-cpp](https://github.com/godotengine/godot-cpp) (included as a submodule)
 - Python + SCons (for building)
 
@@ -34,4 +42,5 @@ python -m SCons
 Then, open up demo/project.godot and run
 
 ## CREDITS:
-	Tileset by Shade from https://merchant-shade.itch.io/16x16-mini-world-sprites under Creative Commons Zero v1.0 Universal
+	Tileset 1 by Shade from https://merchant-shade.itch.io/16x16-mini-world-sprites under Creative Commons Zero v1.0 Universal
+    Tileset 2 by Beast Pixels from https://beast-pixels.itch.io/overworld-tileset-grass-biome under CC-0
