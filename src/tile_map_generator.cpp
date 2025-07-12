@@ -184,8 +184,8 @@ int TileMapGenerator::findTile(Vector2i tileCoords) {
 Dictionary TileMapGenerator::parseRules(TileMapLayer * sample, int size) {
     Dictionary dict;
 
-    for (int x = 0; x < size; x++) {
-        for (int y = 0; y < size; y++) {
+    for (int x = 0; x <= size; x++) {
+        for (int y = 0; y <= size; y++) {
             Vector2i type = sample->get_cell_atlas_coords({x,y});
             
             array<Vector2i, 4> neighbourTypes = {
@@ -223,8 +223,8 @@ Dictionary TileMapGenerator::parseRules(TileMapLayer * sample, int size) {
 Dictionary TileMapGenerator::parseFrequency(TileMapLayer * sample, int size) {
     Dictionary dict;
 
-    for (int x = 0; x < size; x++) {
-        for (int y = 0; y < size; y++) {
+    for (int x = 0; x <= size; x++) {
+        for (int y = 0; y <= size; y++) {
             Vector2i type = sample->get_cell_atlas_coords({x,y});
             if (type == Vector2i(-1, -1)) continue;
 

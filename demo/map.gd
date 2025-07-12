@@ -26,8 +26,8 @@ const tileRules = {
 func _ready() -> void:
 	set_process(false);
 	
-	var rule = gen_layer.parse_rules(base_layer, 12)
-	var freq = gen_layer.parse_frequency(base_layer, 12)
+	var rule = gen_layer.parse_rules(base_layer, 13)
+	var freq = gen_layer.parse_frequency(base_layer, 13)
 	
 	print(rule)
 	print(freq)
@@ -42,6 +42,9 @@ func _process(delta: float) -> void:
 		gen_layer.collapse_tile()
 		gen_layer.collapse_tile()
 		gen_layer.collapse_tile()
-		pass
+		gen_layer.collapse_tile()
+		gen_layer.collapse_tile()
+		gen_layer.collapse_tile()
+		gen_layer.collapse_tile()
 	else:
 		set_process(false)
