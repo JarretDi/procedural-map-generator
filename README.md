@@ -13,9 +13,10 @@ A procedural tile map generator with Godot 4 to explore the Wave Function Collap
 - Written in C++ for performance, using GDExtension
 
 ## Example Usage
-
+Sample (Created in godot engine)
 ![Sample](data/Sample.png)
 
+Generated Result (Created automatically during runtime)
 ![Generated Result](data/Result.png)
 
 ## Dependencies
@@ -39,7 +40,7 @@ scons
 python -m SCons
 ```
 
-Then, open up demo/project.godot and run
+Then, open up demo/project.godot (using godot) and run
 
 ## CREDITS:
 	Tileset 1 by Shade from https://merchant-shade.itch.io/16x16-mini-world-sprites under Creative Commons Zero v1.0 Universal
