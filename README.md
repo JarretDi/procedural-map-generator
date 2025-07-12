@@ -13,10 +13,12 @@ A procedural tile map generator with Godot 4 to explore the Wave Function Collap
 - Written in C++ for performance, using GDExtension
 
 ## Example Usage
-Sample (Created in godot engine)
+Sample (Created in godot engine):
+
 ![Sample](data/Sample.png)
 
-Generated Result (Created automatically during runtime)
+Generated Result (Created automatically during runtime):
+
 ![Generated Result](data/Result.png)
 
 ## Dependencies
